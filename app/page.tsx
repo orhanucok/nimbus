@@ -138,7 +138,8 @@ export default function Home() {
     partialResponse,
     regenerateResponse,
     resetChat,
-    rateLimitError
+    rateLimitError,
+    setMessages
   } = useChat({
     systemPrompt: isstreetMode ? streetModePrompt : originalPrompt
   });
@@ -177,8 +178,10 @@ export default function Home() {
   };
 
   const handleSelectChat = (id: string) => {
-    if (chats.some((c) => c.id === id)) {
+    const found = chats.find((c) => c.id === id);
+    if (found) {
       setChatId(id);
+      setMessages(found.messages);
       setShowChat(true);
     }
   };

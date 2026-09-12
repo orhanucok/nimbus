@@ -673,6 +673,7 @@ const regenerateResponse = useCallback(async (messageIndex: number) => {
     regenerateResponse,
     partialResponse,
     resetChat,
-    rateLimitError
+    rateLimitError,
+    setMessages
   }
 }
