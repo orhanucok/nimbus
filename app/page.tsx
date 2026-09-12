@@ -13,6 +13,7 @@ import ModelChangeAlert from '@/components/ModelChangeAlert';
 import FisnaLogo from '@/components/FisnaLogo';
 import { motion } from 'framer-motion';
 import Sidebar, { SidebarToggle, loadChats, saveChats, type ChatSession } from '@/components/Sidebar';
+import ProviderSwitcher from '@/components/ProviderSwitcher';
 
 const convertImageToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -224,6 +225,7 @@ useEffect(() => {
                 setisstreetMode={setisstreetMode}
               />
             </div>
+            <ProviderSwitcher />
           </div>
         </div>
       </header>
