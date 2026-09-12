@@ -1,11 +1,32 @@
 import './globals.css'
 import { ThemeProvider } from 'next-themes'
 import { IconGitHub } from '@/components/ui/icons'
+import FisnaLogo from '@/components/FisnaLogo'
 import { Analytics } from "@vercel/analytics/react"
+
 export const metadata = {
-  title: 'Groc',
-  description: 'This is a clone of the xAI Grok chat interface',
+  title: 'Fisna — Open-source Grok alternative',
+  description:
+    'Fisna is a free, MIT-licensed Grok-style AI chatbot. Bring your own API key (DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama).',
+  keywords: [
+    'Fisna', 'Grok', 'AI chatbot', 'open source', 'MIT',
+    'DeepSeek', 'OpenAI', 'Groq', 'xAI', 'OpenRouter', 'Ollama',
+    'multi-provider', 'BYOK', 'self-hosted',
+  ],
+  authors: [{ name: 'Fisna contributors' }],
+  creator: 'Fisna',
+  publisher: 'Fisna',
   manifest: '/manifest.json',
+  openGraph: {
+    title: 'Fisna — Open-source Grok alternative',
+    description: 'Grok-style AI chatbot. Multi-provider. MIT. Self-hostable.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Fisna — Open-source Grok alternative',
+    description: 'Grok-style AI chatbot. Multi-provider. MIT. Self-hostable.',
+  },
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -26,18 +47,20 @@ export const metadata = {
 }
 
 const Footer = () => (
-  <footer className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-sm">
-    <div className="max-w-3xl mx-auto p-2 flex items-center justify-center gap-3">
-      <span className="text-xs text-muted-foreground">created by King Bob</span>
+  <footer className="fixed bottom-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-t border-border/40">
+    <div className="max-w-3xl mx-auto p-2 flex items-center justify-center gap-3 text-xs text-muted-foreground">
+      <span>Fisna · MIT licensed</span>
       <a
         href="https://github.com/DatoBHJ/grok-clone"
         target="_blank"
         rel="noopener noreferrer"
         className="p-1.5 rounded-full hover:bg-accent transition-colors"
+        aria-label="Original repo (DatoBHJ/grok-clone)"
+        title="Built on DatoBHJ/grok-clone (MIT)"
       >
         <IconGitHub className="h-4 w-4 text-muted-foreground hover:text-foreground" />
       </a>
-      <span className="text-xs text-muted-foreground">hey xAI, made this just for fun</span>
+      <span>100% unaffiliated with xAI</span>
     </div>
   </footer>
 );

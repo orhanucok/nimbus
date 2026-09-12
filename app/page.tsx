@@ -10,6 +10,8 @@ import { streetModePrompt, originalPrompt } from '@/types/chat';
 
 import ModeSelector from '@/components/ModeSelector';
 import ModelChangeAlert from '@/components/ModelChangeAlert';
+import FisnaLogo from '@/components/FisnaLogo';
+import { motion } from 'framer-motion';
 
 const convertImageToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -276,13 +278,27 @@ return (
         <ModelChangeAlert />
 
     <main className="max-w-3xl mx-auto p-4">
-      <div className="mb-16 mt-8">
-        <h1 className="text-4xl font-medium text-center mb-8 text-black dark:text-white">Groc lol</h1>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        className="mb-16 mt-8"
+      >
+        <div className="flex items-center justify-center gap-3 mb-3">
+          <FisnaLogo className="w-12 h-12" />
+          <h1 className="text-5xl font-semibold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+            Fisna
+          </h1>
+        </div>
+        <p className="text-center text-muted-foreground text-sm mb-8">
+          Open-source, multi-provider Grok alternative · MIT
+        </p>
         <div className="relative">
           <div className="relative flex items-center">
-            <button 
+            <button
               className="absolute left-3 z-10 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               onClick={handleImageClick}
+              aria-label="Attach image"
             >
               <Image className="w-5 h-5 text-foreground/40 dark:text-white" />
             </button>
@@ -291,7 +307,7 @@ return (
               ref={textAreaRef}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder={selectedImage ? "Ask bout this pic" : "Sup, ask anything"}
+              placeholder={selectedImage ? "Ask about this image…" : "Ask anything…"}
               className="w-full py-4 px-14 bg-input rounded-full text-black dark:text-white placeholder-inputtext focus:outline-none resize-none overflow-hidden min-h-[56px] max-h-[200px]"
               onKeyPress={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -302,9 +318,10 @@ return (
               rows={1}
             />
 
-            <button 
+            <button
               className="absolute right-3 z-10 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               onClick={handleStartChat}
+              aria-label="Send message"
             >
               <SendHorizontal className="w-5 h-5 text-foreground cursor-pointer" />
             </button>
@@ -318,36 +335,31 @@ return (
             onChange={handleImageUpload}
           />
         </div>
-        
+
         {selectedImage && (
           <div className="mt-4 relative inline-block">
-            <img 
-              src={selectedImage} 
-              alt="Selected" 
+            <img
+              src={selectedImage}
+              alt="Selected"
               className="max-h-40 rounded-lg"
             />
             <button
               onClick={removeSelectedImage}
               className="absolute top-2 right-2 p-1 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
+              aria-label="Remove image"
             >
               <X className="w-4 h-4 text-white" />
             </button>
           </div>
         )}
 
-
-
-          {/* <p className="text-center dark:text-zinc-700 text-slate-300 text-md font-medium mt-2">
-            Groc can make mistakes. Verify its outputs.
-          </p> */}
-
-          <p className="text-center dark:text-zinc-700 text-slate-300 text-sm font-medium mt-2">
-          Groc is like xAI's Grok, but way more chill.
+        <p className="text-center dark:text-zinc-700 text-slate-300 text-sm font-medium mt-3">
+          Fisna can make mistakes. Verify important outputs.
           <br />
-          Important: Groc is 100% unaffiliated with xAI. 
-          </p>
+          <span className="opacity-70">100% unaffiliated with xAI.</span>
+        </p>
 
-        </div>
+      </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <SuggestionCard 
