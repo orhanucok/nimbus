@@ -12,6 +12,7 @@ import ModeSelector from '@/components/ModeSelector';
 import ModelChangeAlert from '@/components/ModelChangeAlert';
 import FisnaLogo from '@/components/FisnaLogo';
 import { motion } from 'framer-motion';
+import Sidebar, { SidebarToggle, loadChats, saveChats, type ChatSession } from '@/components/Sidebar';
 
 const convertImageToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -122,19 +123,64 @@ export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const { 
-    messages, 
-    isLoading, 
-    error, 
-    addMessage, 
-    editMessage, 
-    partialResponse, 
+  // Chat history (sidebar) state — persisted to localStorage
+  const [chats, setChats] = useState<ChatSession[]>([]);
+  const [chatId, setChatId] = useState<string>(() => Date.now().toString());
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const {
+    messages,
+    isLoading,
+    error,
+    addMessage,
+    editMessage,
+    partialResponse,
     regenerateResponse,
     resetChat,
-    rateLimitError 
+    rateLimitError
   } = useChat({
     systemPrompt: isstreetMode ? streetModePrompt : originalPrompt
   });
+
+  // Hydrate chats from localStorage on mount
+  useEffect(() => {
+    setChats(loadChats());
+  }, []);
+
+  // Auto-save current chat to history when messages change
+  useEffect(() => {
+    if (messages.length === 0) return;
+    const firstUserMsg = messages.find((m) => m.role === 'user');
+    const title = (() => {
+      const content = firstUserMsg?.content;
+      const text = typeof content === 'string' ? content : content?.text ?? '';
+      return text.slice(0, 60) || 'Yeni Sohbet';
+    })();
+    const session: ChatSession = {
+      id: chatId,
+      title,
+      updatedAt: Date.now(),
+      messages,
+    };
+    setChats((prev) => {
+      const next = [session, ...prev.filter((c) => c.id !== chatId)].slice(0, 50);
+      saveChats(next);
+      return next;
+    });
+  }, [messages, chatId]);
+
+  const handleNewChat = () => {
+    resetChat();
+    setChatId(Date.now().toString());
+    setShowChat(false);
+  };
+
+  const handleSelectChat = (id: string) => {
+    if (chats.some((c) => c.id === id)) {
+      setChatId(id);
+      setShowChat(true);
+    }
+  };
 
 
 // Auto-resize textarea
@@ -145,23 +191,25 @@ useEffect(() => {
   }
 }, [inputValue]);
 
-  const Header = ({ 
-    onBack, 
+  const Header = ({
+    onBack,
     showBackButton = true,
     isstreetMode,
-    setisstreetMode 
-  }: { 
+    setisstreetMode,
+  }: {
     onBack?: () => void;
     showBackButton?: boolean;
     isstreetMode: boolean;
     setisstreetMode: (value: boolean) => void;
   }) => {
     return (
-      <header className="sticky top-0 z-50 bg-background/70 backdrop-blur-md">
+      <header className="sticky top-0 z-30 bg-background/70 backdrop-blur-md">
         <div className="w-full mx-auto">
-          <div className="p-4 flex items-center">
+          <div className="p-4 flex items-center gap-2">
+            <SidebarToggle onClick={() => setSidebarOpen(true)} />
+
             {showBackButton && (
-              <button 
+              <button
                 className="p-2 hover:bg-card rounded-lg transition-colors"
                 onClick={onBack}
                 aria-label="Go back"
@@ -169,9 +217,9 @@ useEffect(() => {
                 <ArrowLeft className="w-5 h-5" />
               </button>
             )}
-            
+
             <div className="flex-1 flex justify-center">
-              <ModeSelector 
+              <ModeSelector
                 isstreetMode={isstreetMode}
                 setisstreetMode={setisstreetMode}
               />
@@ -243,34 +291,54 @@ useEffect(() => {
 
 if (showChat) {
   return (
-    <div className="flex flex-col h-[100dvh]"> 
-      <Header 
-        onBack={handleBack} 
-        showBackButton={true}
-        isstreetMode={isstreetMode}
-        setisstreetMode={setisstreetMode}
+    <div className="flex h-[100dvh]">
+      <Sidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        onNewChat={handleNewChat}
+        onSelectChat={handleSelectChat}
+        currentChatId={chatId}
+        chats={chats}
+        onChatsChange={setChats}
       />
-      <main className="flex-1 overflow-y-auto">
-        <div className="max-w-3xl mx-auto">
-          <Chat 
-            messages={messages}
-            isLoading={isLoading}
-            error={error}
-            addMessage={addMessage}
-            editMessage={editMessage} 
-            regenerateResponse={regenerateResponse}
-            partialResponse={partialResponse}
-            rateLimitError={rateLimitError}
-          />
-        </div>
-      </main>
+      <div className="flex-1 flex flex-col min-w-0">
+        <Header
+          onBack={handleBack}
+          showBackButton={true}
+          isstreetMode={isstreetMode}
+          setisstreetMode={setisstreetMode}
+        />
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-3xl mx-auto">
+            <Chat
+              messages={messages}
+              isLoading={isLoading}
+              error={error}
+              addMessage={addMessage}
+              editMessage={editMessage}
+              regenerateResponse={regenerateResponse}
+              partialResponse={partialResponse}
+              rateLimitError={rateLimitError}
+            />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
 
 return (
   <div className="min-h-screen bg-background text-foreground">
-    <Header 
+    <Sidebar
+      open={sidebarOpen}
+      onClose={() => setSidebarOpen(false)}
+      onNewChat={handleNewChat}
+      onSelectChat={handleSelectChat}
+      currentChatId={chatId}
+      chats={chats}
+      onChatsChange={setChats}
+    />
+    <Header
       showBackButton={false}
       isstreetMode={isstreetMode}
       setisstreetMode={setisstreetMode}
