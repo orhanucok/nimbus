@@ -1,7 +1,7 @@
-'use client';
+﻿'use client';
 
 import { useEffect } from 'react';
-import FisnaLogo from '@/components/FisnaLogo';
+import NimbusLogo from '@/components/NimbusLogo';
 
 export default function Error({
   error,
@@ -11,23 +11,23 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Surface to console — in production wire to a logger.
-    console.error('[Fisna] Route error:', error);
+    // Surface to console â€” in production wire to a logger.
+    console.error('[Nimbus] Route error:', error);
   }, [error]);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-background text-foreground">
       <div className="max-w-md w-full text-center">
         <div className="flex justify-center mb-6">
-          <FisnaLogo className="w-14 h-14" />
+          <NimbusLogo className="w-14 h-14" />
         </div>
 
         <h1 className="text-3xl font-semibold mb-2">
-          Bir şeyler ters gitti
+          Bir ÅŸeyler ters gitti
         </h1>
         <p className="text-muted-foreground mb-6">
-          Beklenmeyen bir hata oluştu. İnternet bağlantınızı ve API
-          anahtarınızı kontrol edip tekrar deneyin.
+          Beklenmeyen bir hata oluÅŸtu. Ä°nternet baÄŸlantÄ±nÄ±zÄ± ve API
+          anahtarÄ±nÄ±zÄ± kontrol edip tekrar deneyin.
         </p>
 
         {error.digest && (
@@ -50,12 +50,12 @@ export default function Error({
             className="px-4 py-2 border border-border hover:bg-accent
               rounded-lg font-medium transition-colors"
           >
-            Ana sayfaya dön
+            Ana sayfaya dÃ¶n
           </a>
         </div>
 
         <p className="text-xs text-muted-foreground/60 mt-8">
-          Fisna · MIT licensed · 100% unaffiliated with xAI
+          Nimbus Â· MIT licensed Â· 100% unaffiliated with xAI
         </p>
       </div>
     </div>

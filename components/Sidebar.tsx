@@ -1,8 +1,8 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { Plus, Trash2, MessageSquare, X, Menu } from 'lucide-react';
-import FisnaLogo from './FisnaLogo';
+import NimbusLogo from './NimbusLogo';
 
 export interface ChatSession {
   id: string;
@@ -11,7 +11,7 @@ export interface ChatSession {
   messages: unknown[];
 }
 
-const STORAGE_KEY = 'fisna-chats';
+const STORAGE_KEY = 'Nimbus-chats';
 
 export function loadChats(): ChatSession[] {
   if (typeof window === 'undefined') return [];
@@ -28,7 +28,7 @@ export function saveChats(chats: ChatSession[]) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
   } catch {
-    // quota / private mode — silently skip
+    // quota / private mode â€” silently skip
   }
 }
 
@@ -80,18 +80,18 @@ export function Sidebar({
           flex flex-col h-screen transform transition-transform duration-300 ease-out
           ${open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
           ${open ? '' : 'md:hidden'}`}
-        aria-label="Sohbet geçmişi"
+        aria-label="Sohbet geÃ§miÅŸi"
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex items-center gap-2">
-            <FisnaLogo className="w-7 h-7" />
-            <span className="font-semibold text-base">Fisna</span>
+            <NimbusLogo className="w-7 h-7" />
+            <span className="font-semibold text-base">Nimbus</span>
           </div>
           <button
             onClick={onClose}
             className="md:hidden p-2 hover:bg-accent rounded-lg transition-colors"
-            aria-label="Menüyü kapat"
+            aria-label="MenÃ¼yÃ¼ kapat"
           >
             <X className="w-5 h-5" />
           </button>
@@ -118,9 +118,9 @@ export function Sidebar({
             <div className="px-3 py-8 text-center">
               <MessageSquare className="w-8 h-8 mx-auto mb-2 text-muted-foreground/40" />
               <p className="text-xs text-muted-foreground">
-                Henüz sohbet yok.
+                HenÃ¼z sohbet yok.
                 <br />
-                Bir mesaj yazınca otomatik kaydedilir.
+                Bir mesaj yazÄ±nca otomatik kaydedilir.
               </p>
             </div>
           ) : (
@@ -162,7 +162,7 @@ export function Sidebar({
 
         {/* Footer */}
         <div className="p-4 border-t border-border text-xs text-muted-foreground space-y-1">
-          <p>Fisna · MIT licensed</p>
+          <p>Nimbus Â· MIT licensed</p>
           <p className="opacity-70">100% unaffiliated with xAI</p>
         </div>
       </aside>
@@ -176,7 +176,7 @@ export function SidebarToggle({ onClick }: { onClick: () => void }) {
     <button
       onClick={onClick}
       className="md:hidden p-2 hover:bg-card rounded-lg transition-colors"
-      aria-label="Menüyü aç"
+      aria-label="MenÃ¼yÃ¼ aÃ§"
     >
       <Menu className="w-5 h-5" />
     </button>

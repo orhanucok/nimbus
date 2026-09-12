@@ -1,16 +1,16 @@
-﻿Fisna
-Copyright (c) 2024 Fisna contributors
+﻿Nimbus
+Copyright (c) 2024 Nimbus contributors
 
 This product includes software developed by:
 
   DatoBHJ (https://github.com/DatoBHJ) — original Grok-clone
   Licensed under the MIT License.
 
-Modifications by Fisna contributors:
+Modifications by Nimbus contributors:
 
   - Multi-provider LLM support (DeepSeek, OpenAI, Groq, xAI,
     OpenRouter, Ollama) via LLM_PROVIDER env var
-  - Renamed project from "grok-clone" to "Fisna"
+  - Renamed project from "grok-clone" to "Nimbus"
   - Updated README with provider docs and attribution
   - Added .env.example and NOTICE for clarity
   - Updated package.json name/description

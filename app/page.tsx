@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
 import { SendHorizontal, Image, ArrowLeft, X } from 'lucide-react';
@@ -10,7 +10,7 @@ import { streetModePrompt, originalPrompt } from '@/types/chat';
 
 import ModeSelector from '@/components/ModeSelector';
 import ModelChangeAlert from '@/components/ModelChangeAlert';
-import FisnaLogo from '@/components/FisnaLogo';
+import NimbusLogo from '@/components/NimbusLogo';
 import { motion } from 'framer-motion';
 import Sidebar, { SidebarToggle, loadChats, saveChats, type ChatSession } from '@/components/Sidebar';
 import ProviderSwitcher from '@/components/ProviderSwitcher';
@@ -124,7 +124,7 @@ export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Chat history (sidebar) state — persisted to localStorage
+  // Chat history (sidebar) state â€” persisted to localStorage
   const [chats, setChats] = useState<ChatSession[]>([]);
   const [chatId, setChatId] = useState<string>(() => Date.now().toString());
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -358,13 +358,13 @@ return (
         className="mb-16 mt-8"
       >
         <div className="flex items-center justify-center gap-3 mb-3">
-          <FisnaLogo className="w-12 h-12" />
+          <NimbusLogo className="w-12 h-12" />
           <h1 className="text-5xl font-semibold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Fisna
+            Nimbus
           </h1>
         </div>
         <p className="text-center text-muted-foreground text-sm mb-8">
-          Open-source, multi-provider Grok alternative · MIT
+          Open-source, multi-provider Grok alternative Â· MIT
         </p>
         <div className="relative">
           <div className="relative flex items-center">
@@ -380,7 +380,7 @@ return (
               ref={textAreaRef}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder={selectedImage ? "Ask about this image…" : "Ask anything…"}
+              placeholder={selectedImage ? "Ask about this imageâ€¦" : "Ask anythingâ€¦"}
               className="w-full py-4 px-14 bg-input rounded-full text-black dark:text-white placeholder-inputtext focus:outline-none resize-none overflow-hidden min-h-[56px] max-h-[200px]"
               onKeyPress={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -427,7 +427,7 @@ return (
         )}
 
         <p className="text-center dark:text-zinc-700 text-slate-300 text-sm font-medium mt-3">
-          Fisna can make mistakes. Verify important outputs.
+          Nimbus can make mistakes. Verify important outputs.
           <br />
           <span className="opacity-70">100% unaffiliated with xAI.</span>
         </p>
@@ -478,11 +478,11 @@ return (
         {/* <div className="grid grid-cols-2 gap-4">
           <NewsCard 
             title="M4 Mac Mini: Power and Price Debate"
-            meta="Trending now · Technology · 821 posts"
+            meta="Trending now Â· Technology Â· 821 posts"
           />
           <NewsCard 
             title="Sam Altman's AGI Prediction for 2025"
-            meta="16 hours ago · Technology · 6K posts"
+            meta="16 hours ago Â· Technology Â· 6K posts"
           />
         </div> */}
       </main>

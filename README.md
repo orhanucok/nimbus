@@ -1,6 +1,6 @@
-<div align="center">
+﻿<div align="center">
 
-# Fisna
+# Nimbus
 
 **Open-source Grok alternative. Multi-provider. MIT. Self-hostable.**
 
@@ -11,10 +11,10 @@
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](.github/CONTRIBUTING.md)
 [![Build](https://img.shields.io/badge/CI-passing-brightgreen)](.github/workflows/ci.yml)
 
-A self-hosted AI chatbot with Grok-style personality. Bring your own API key —
+A self-hosted AI chatbot with Grok-style personality. Bring your own API key â€”
 DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama.
 
-[Quick Start](#-quick-start) · [Providers](#-providers) · [Features](#-features) · [Deploy](#-deploy) · [Attribution](#-attribution)
+[Quick Start](#-quick-start) Â· [Providers](#-providers) Â· [Features](#-features) Â· [Deploy](#-deploy) Â· [Attribution](#-attribution)
 
 ![Preview](assets/preview.png)
 
@@ -22,7 +22,7 @@ DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama.
 
 ---
 
-## ✨ Why Fisna?
+## âœ¨ Why Nimbus?
 
 - **Bring your own model.** DeepSeek is the default (cheap, fast, OpenAI-compatible). Swap to OpenAI, Groq, xAI, OpenRouter, or local Ollama by editing one env var.
 - **Grok-style personality.** Three modes: Original (JARVIS + Tony Stark), Street (Jesse Pinkman), Unhinged (Joker + Rick Sanchez + Deadpool).
@@ -31,34 +31,34 @@ DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama.
 - **MIT licensed.** Fork it, ship it, sell it.
 - **No vendor lock-in.** Your data, your keys, your server.
 
-## 🥊 Fisna vs Grok
+## ğŸ¥Š Nimbus vs Grok
 
-| | **Grok** (xAI) | **Fisna** |
+| | **Grok** (xAI) | **Nimbus** |
 |---|---|---|
 | **License** | Proprietary, closed weights | MIT, full source code |
 | **Pricing** | $16/mo X Premium or pay-per-token API | BYOK (your own API key) |
 | **Model** | xAI only | DeepSeek / OpenAI / Groq / xAI / OpenRouter / Ollama |
-| **Run locally** | ❌ | ✅ Ollama, LM Studio, anything OpenAI-compatible |
-| **Real-time X data** | ✅ built-in | ✅ optional via X API key |
-| **Web search** | ✅ | ✅ Serper (optional) |
-| **Image generation** | ✅ Aurora | ✅ FLUX (optional) |
-| **Vision** | ✅ | ✅ Drop images |
-| **Chat history** | ✅ tied to X account | ✅ localStorage (yours, on your device) |
-| **Customize personality** | ❌ | ✅ Edit `types/chat.ts` |
-| **Fork & modify** | ❌ | ✅ MIT |
-| **Self-host** | ❌ | ✅ `docker compose up -d` |
-| **Affiliate with xAI** | Required | ❌ 100% unaffiliated |
+| **Run locally** | âŒ | âœ… Ollama, LM Studio, anything OpenAI-compatible |
+| **Real-time X data** | âœ… built-in | âœ… optional via X API key |
+| **Web search** | âœ… | âœ… Serper (optional) |
+| **Image generation** | âœ… Aurora | âœ… FLUX (optional) |
+| **Vision** | âœ… | âœ… Drop images |
+| **Chat history** | âœ… tied to X account | âœ… localStorage (yours, on your device) |
+| **Customize personality** | âŒ | âœ… Edit `types/chat.ts` |
+| **Fork & modify** | âŒ | âœ… MIT |
+| **Self-host** | âŒ | âœ… `docker compose up -d` |
+| **Affiliate with xAI** | Required | âŒ 100% unaffiliated |
 
 > Bottom line: Grok if you want xAI's model and an X subscription.
-> Fisna if you want the *personality* and the *freedom*.
+> Nimbus if you want the *personality* and the *freedom*.
 
-## 🚀 Quick Start
+## ğŸš€ Quick Start
 
 ### 1. Clone & install
 
 ```bash
-git clone https://github.com/<you>/fisna.git
-cd fisna
+git clone https://github.com/<you>/Nimbus.git
+cd Nimbus
 npm install
 ```
 
@@ -83,13 +83,13 @@ npm run dev
 
 Open <http://localhost:3000>.
 
-## 🤖 Providers
+## ğŸ¤– Providers
 
 Pick any OpenAI-compatible LLM provider. Switch via `LLM_PROVIDER` in `.env.local`:
 
 | Provider | Base URL | Default model | Notes |
 |---|---|---|---|
-| **DeepSeek** ⭐ | `api.deepseek.com/v1` | `deepseek-chat` | Cheap, fast, good quality (recommended default) |
+| **DeepSeek** â­ | `api.deepseek.com/v1` | `deepseek-chat` | Cheap, fast, good quality (recommended default) |
 | **OpenAI** | `api.openai.com/v1` | `gpt-4o-mini` | Standard, reliable |
 | **Groq** | `api.groq.com/openai/v1` | `llama-3.3-70b-versatile` | Ultra-fast inference, free tier |
 | **xAI (Grok)** | `api.x.ai/v1` | `grok-beta` | Original Grok |
@@ -98,31 +98,31 @@ Pick any OpenAI-compatible LLM provider. Switch via `LLM_PROVIDER` in `.env.loca
 
 For each, override the model by setting `<PROVIDER>_MODEL=...` in `.env.local`.
 
-## 🎯 Features
+## ğŸ¯ Features
 
 ### Core
-- 💬 Streaming chat with markdown + code-block rendering
-- 🖼️ Vision (drop or paste images)
-- 🎨 Image generation (FLUX.1 via FAL)
-- 🎭 Three personality modes (Original / Street / Unhinged)
-- 🌓 Dark / light mode (auto by system)
-- 📱 Responsive, PWA-ready
-- ⌨️ Keyboard-friendly (Enter to send, Shift+Enter for newline)
+- ğŸ’¬ Streaming chat with markdown + code-block rendering
+- ğŸ–¼ï¸ Vision (drop or paste images)
+- ğŸ¨ Image generation (FLUX.1 via FAL)
+- ğŸ­ Three personality modes (Original / Street / Unhinged)
+- ğŸŒ“ Dark / light mode (auto by system)
+- ğŸ“± Responsive, PWA-ready
+- âŒ¨ï¸ Keyboard-friendly (Enter to send, Shift+Enter for newline)
 
 ### Data
-- 🔍 Real-time web search (Serper)
-- 🐦 Live X / Twitter search (twitter-api-v2)
-- 📺 YouTube transcript extraction
-- 🔗 URL link previews
+- ğŸ” Real-time web search (Serper)
+- ğŸ¦ Live X / Twitter search (twitter-api-v2)
+- ğŸ“º YouTube transcript extraction
+- ğŸ”— URL link previews
 
 ### Engineering
-- ⚡ Next.js 15 App Router, Edge runtime
-- 🛡️ Multi-provider LLM via OpenAI-compatible API
-- 🎚️ Rate limiting (Upstash Redis, optional)
-- 📊 Vercel Analytics built-in
-- 🔐 BYOK — keys stay in `.env.local`, never sent to Fisna
+- âš¡ Next.js 15 App Router, Edge runtime
+- ğŸ›¡ï¸ Multi-provider LLM via OpenAI-compatible API
+- ğŸšï¸ Rate limiting (Upstash Redis, optional)
+- ğŸ“Š Vercel Analytics built-in
+- ğŸ” BYOK â€” keys stay in `.env.local`, never sent to Nimbus
 
-## 🛠️ Optional integrations
+## ğŸ› ï¸ Optional integrations
 
 | Service | Used for | Get key |
 |---|---|---|
@@ -133,45 +133,45 @@ For each, override the model by setting `<PROVIDER>_MODEL=...` in `.env.local`.
 
 All optional. The chat works without any of them.
 
-## 🎭 Personality modes
+## ğŸ­ Personality modes
 
 Click the mode selector at the top of the chat to switch:
 
-- **Original** — "Groc, JARVIS's technical brilliance + Tony Stark's swagger." Direct, witty, brilliant.
-- **Street** — "Jesse Pinkman's attitude + JARVIS's brains." Slang-heavy, casual, street talk.
-- **Unhinged** — "Joker + Rick Sanchez + Deadpool." Chaotic, fourth-wall-breaking, but technically accurate.
+- **Original** â€” "Groc, JARVIS's technical brilliance + Tony Stark's swagger." Direct, witty, brilliant.
+- **Street** â€” "Jesse Pinkman's attitude + JARVIS's brains." Slang-heavy, casual, street talk.
+- **Unhinged** â€” "Joker + Rick Sanchez + Deadpool." Chaotic, fourth-wall-breaking, but technically accurate.
 
 Edit prompts in `types/chat.ts` to customize or add your own mode.
 
-## 🏗️ Architecture
+## ğŸ—ï¸ Architecture
 
 ```
 app/
-├── api/
-│   ├── chat/route.ts           # Main chat (OpenAI-compatible streaming)
-│   ├── function-calling/       # Web search + tweet fetch + YouTube
-│   ├── image-chat/             # Vision
-│   └── rate-limit/             # Upstash token bucket
-├── config.tsx                  # Multi-provider LLM config
-├── page.tsx                    # Chat UI + landing
-├── layout.tsx                  # Theme, metadata, footer
-└── globals.css                 # Design tokens
+â”œâ”€â”€ api/
+â”‚   â”œâ”€â”€ chat/route.ts           # Main chat (OpenAI-compatible streaming)
+â”‚   â”œâ”€â”€ function-calling/       # Web search + tweet fetch + YouTube
+â”‚   â”œâ”€â”€ image-chat/             # Vision
+â”‚   â””â”€â”€ rate-limit/             # Upstash token bucket
+â”œâ”€â”€ config.tsx                  # Multi-provider LLM config
+â”œâ”€â”€ page.tsx                    # Chat UI + landing
+â”œâ”€â”€ layout.tsx                  # Theme, metadata, footer
+â””â”€â”€ globals.css                 # Design tokens
 
 components/
-├── Chat.tsx                    # Main chat orchestrator
-├── ChatInput.tsx               # Input box with image upload
-├── ChatMessage.tsx             # Message rendering (markdown + sources)
-├── ChatView.tsx                # Scrollable message list
-├── ModeSelector.tsx            # Personality switcher
-├── FisnaLogo.tsx               # Brand mark
-└── ui/                         # shadcn-style primitives
+â”œâ”€â”€ Chat.tsx                    # Main chat orchestrator
+â”œâ”€â”€ ChatInput.tsx               # Input box with image upload
+â”œâ”€â”€ ChatMessage.tsx             # Message rendering (markdown + sources)
+â”œâ”€â”€ ChatView.tsx                # Scrollable message list
+â”œâ”€â”€ ModeSelector.tsx            # Personality switcher
+â”œâ”€â”€ NimbusLogo.tsx               # Brand mark
+â””â”€â”€ ui/                         # shadcn-style primitives
 
 types/chat.ts                   # System prompts + chat config
 hooks/useChat.ts                # Chat state machine
 lib/                            # URL fetching, YouTube transcript, utils
 ```
 
-## 🚢 Deploy
+## ğŸš¢ Deploy
 
 ### Vercel (easiest)
 
@@ -185,8 +185,8 @@ Add your `.env.local` keys via the Vercel dashboard.
 ### Docker (self-hosted)
 
 ```bash
-docker build -t fisna .
-docker run -p 3000:3000 --env-file .env.local fisna
+docker build -t Nimbus .
+docker run -p 3000:3000 --env-file .env.local Nimbus
 ```
 
 ### Run locally (production build)
@@ -196,7 +196,7 @@ npm run build
 npm start
 ```
 
-## 📸 Screenshots
+## ğŸ“¸ Screenshots
 
 > Add real screenshots to `assets/` and reference them here. Suggested shots:
 > 1. Landing page (hero + suggestion cards)
@@ -206,14 +206,14 @@ npm start
 
 ```
 assets/
-├── preview.png      # Hero shot (1200x630)
-├── landing.png      # Full landing page
-├── chat-light.png   # Chat in light mode
-├── chat-dark.png    # Chat in dark mode
-└── providers.png    # Provider switcher dropdown
+â”œâ”€â”€ preview.png      # Hero shot (1200x630)
+â”œâ”€â”€ landing.png      # Full landing page
+â”œâ”€â”€ chat-light.png   # Chat in light mode
+â”œâ”€â”€ chat-dark.png    # Chat in dark mode
+â””â”€â”€ providers.png    # Provider switcher dropdown
 ```
 
-## 🤝 Contributing
+## ğŸ¤ Contributing
 
 Contributions welcome! Good first issues:
 
@@ -226,25 +226,25 @@ Contributions welcome! Good first issues:
 
 Read [CONTRIBUTING.md](.github/CONTRIBUTING.md) first.
 
-## 📜 Attribution
+## ğŸ“œ Attribution
 
-Fisna is built on top of [**DatoBHJ/grok-clone**](https://github.com/DatoBHJ/grok-clone) — an excellent MIT-licensed Grok clone with the original Grok-style UI and personality prompts. Fisna extends that base with:
+Nimbus is built on top of [**DatoBHJ/grok-clone**](https://github.com/DatoBHJ/grok-clone) â€” an excellent MIT-licensed Grok clone with the original Grok-style UI and personality prompts. Nimbus extends that base with:
 
 - **Multi-provider LLM support** (DeepSeek, OpenAI, Groq, xAI, OpenRouter, Ollama)
-- **Renamed and rebranded** as Fisna with custom logo + metadata
+- **Renamed and rebranded** as Nimbus with custom logo + metadata
 - **Updated documentation** for the new provider system
 - **GitHub Actions CI** for lint + type-check + build
 
 All original code, prompts, and assets remain MIT-licensed by their respective authors. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
-## 📄 License
+## ğŸ“„ License
 
-MIT — see [LICENSE](LICENSE).
+MIT â€” see [LICENSE](LICENSE).
 
 - Original work: Copyright (c) 2024 Groc (DatoBHJ)
-- Fisna modifications: see [NOTICE](NOTICE)
+- Nimbus modifications: see [NOTICE](NOTICE)
 
-## 🗺️ Roadmap
+## ğŸ—ºï¸ Roadmap
 
 - [ ] Anthropic (Claude) provider support
 - [ ] Voice mode (TTS/STT)
@@ -259,6 +259,6 @@ MIT — see [LICENSE](LICENSE).
 
 <div align="center">
 
-⭐ **If Fisna saved you from a Grok subscription, give it a star.** ⭐
+â­ **If Nimbus saved you from a Grok subscription, give it a star.** â­
 
 </div>

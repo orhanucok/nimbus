@@ -1,30 +1,30 @@
-import './globals.css'
+﻿import './globals.css'
 import { ThemeProvider } from 'next-themes'
 import { IconGitHub } from '@/components/ui/icons'
-import FisnaLogo from '@/components/FisnaLogo'
+import NimbusLogo from '@/components/NimbusLogo'
 import { Analytics } from "@vercel/analytics/react"
 
 export const metadata = {
-  title: 'Fisna — Open-source Grok alternative',
+  title: 'Nimbus â€” Open-source Grok alternative',
   description:
-    'Fisna is a free, MIT-licensed Grok-style AI chatbot. Bring your own API key (DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama).',
+    'Nimbus is a free, MIT-licensed Grok-style AI chatbot. Bring your own API key (DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama).',
   keywords: [
-    'Fisna', 'Grok', 'AI chatbot', 'open source', 'MIT',
+    'Nimbus', 'Grok', 'AI chatbot', 'open source', 'MIT',
     'DeepSeek', 'OpenAI', 'Groq', 'xAI', 'OpenRouter', 'Ollama',
     'multi-provider', 'BYOK', 'self-hosted',
   ],
-  authors: [{ name: 'Fisna contributors' }],
-  creator: 'Fisna',
-  publisher: 'Fisna',
+  authors: [{ name: 'Nimbus contributors' }],
+  creator: 'Nimbus',
+  publisher: 'Nimbus',
   manifest: '/manifest.json',
   openGraph: {
-    title: 'Fisna — Open-source Grok alternative',
+    title: 'Nimbus â€” Open-source Grok alternative',
     description: 'Grok-style AI chatbot. Multi-provider. MIT. Self-hostable.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Fisna — Open-source Grok alternative',
+    title: 'Nimbus â€” Open-source Grok alternative',
     description: 'Grok-style AI chatbot. Multi-provider. MIT. Self-hostable.',
   },
   icons: {
@@ -49,7 +49,7 @@ export const metadata = {
 const Footer = () => (
   <footer className="fixed bottom-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-t border-border/40">
     <div className="max-w-3xl mx-auto p-2 flex items-center justify-center gap-3 text-xs text-muted-foreground">
-      <span>Fisna · MIT licensed</span>
+      <span>Nimbus Â· MIT licensed</span>
       <a
         href="https://github.com/DatoBHJ/grok-clone"
         target="_blank"

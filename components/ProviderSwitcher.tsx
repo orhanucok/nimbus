@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { ChevronDown, Server } from 'lucide-react';
@@ -49,14 +49,14 @@ export const PROVIDERS: ProviderInfo[] = [
   },
 ];
 
-const STORAGE_KEY = 'fisna-provider';
+const STORAGE_KEY = 'Nimbus-provider';
 
 interface ProviderSwitcherProps {
   /** Currently active provider id (controlled). Falls back to localStorage. */
   value?: string;
   /** Called when user picks a different provider. */
   onChange?: (id: string) => void;
-  /** Visual variant — 'header' for compact header use, 'block' for settings. */
+  /** Visual variant â€” 'header' for compact header use, 'block' for settings. */
   variant?: 'header' | 'block';
 }
 
@@ -104,7 +104,7 @@ export function ProviderSwitcher({
             <div className="flex items-center justify-between mb-1">
               <span className="font-medium">{p.name}</span>
               {p.id === active && (
-                <span className="text-xs text-blue-500 font-semibold">✓ Active</span>
+                <span className="text-xs text-blue-500 font-semibold">âœ“ Active</span>
               )}
             </div>
             <p className="text-xs text-muted-foreground mb-2">{p.description}</p>
@@ -175,7 +175,7 @@ export function ProviderSwitcher({
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{p.name}</span>
                   {p.id === active && (
-                    <span className="text-xs text-blue-500">✓</span>
+                    <span className="text-xs text-blue-500">âœ“</span>
                   )}
                 </div>
                 <div className="text-xs text-muted-foreground mt-0.5">

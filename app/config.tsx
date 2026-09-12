@@ -1,4 +1,4 @@
-// app/config.tsx — Multi-provider LLM config for Fisna
+﻿// app/config.tsx â€” Multi-provider LLM config for Nimbus
 // Switch providers via LLM_PROVIDER and FC_LLM_PROVIDER in .env.local
 
 type ProviderName = 'deepseek' | 'openai' | 'groq' | 'xai' | 'openrouter' | 'ollama';

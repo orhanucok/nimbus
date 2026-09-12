@@ -1,6 +1,6 @@
-# Fisna — multi-stage Dockerfile
-# Build:  docker build -t fisna:latest .
-# Run:    docker run -p 3000:3000 --env-file .env.local fisna:latest
+﻿# Nimbus â€” multi-stage Dockerfile
+# Build:  docker build -t Nimbus:latest .
+# Run:    docker run -p 3000:3000 --env-file .env.local Nimbus:latest
 
 # ---------- deps ----------
 FROM node:22-alpine AS deps

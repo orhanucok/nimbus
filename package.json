@@ -1,5 +1,5 @@
-{
-  "name": "fisna",
+﻿{
+  "name": "Nimbus",
   "version": "0.2.0",
   "description": "Open-source, multi-provider Grok-style AI chatbot. Bring your own API key (DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama).",
   "private": true,
