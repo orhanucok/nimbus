@@ -31,6 +31,27 @@ DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama.
 - **MIT licensed.** Fork it, ship it, sell it.
 - **No vendor lock-in.** Your data, your keys, your server.
 
+## 🥊 Fisna vs Grok
+
+| | **Grok** (xAI) | **Fisna** |
+|---|---|---|
+| **License** | Proprietary, closed weights | MIT, full source code |
+| **Pricing** | $16/mo X Premium or pay-per-token API | BYOK (your own API key) |
+| **Model** | xAI only | DeepSeek / OpenAI / Groq / xAI / OpenRouter / Ollama |
+| **Run locally** | ❌ | ✅ Ollama, LM Studio, anything OpenAI-compatible |
+| **Real-time X data** | ✅ built-in | ✅ optional via X API key |
+| **Web search** | ✅ | ✅ Serper (optional) |
+| **Image generation** | ✅ Aurora | ✅ FLUX (optional) |
+| **Vision** | ✅ | ✅ Drop images |
+| **Chat history** | ✅ tied to X account | ✅ localStorage (yours, on your device) |
+| **Customize personality** | ❌ | ✅ Edit `types/chat.ts` |
+| **Fork & modify** | ❌ | ✅ MIT |
+| **Self-host** | ❌ | ✅ `docker compose up -d` |
+| **Affiliate with xAI** | Required | ❌ 100% unaffiliated |
+
+> Bottom line: Grok if you want xAI's model and an X subscription.
+> Fisna if you want the *personality* and the *freedom*.
+
 ## 🚀 Quick Start
 
 ### 1. Clone & install
