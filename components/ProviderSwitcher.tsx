@@ -47,6 +47,12 @@ export const PROVIDERS: ProviderInfo[] = [
     model: 'llama3.2',
     description: 'Run on your own machine, fully private',
   },
+  {
+    id: 'custom',
+    name: 'Custom…',
+    model: 'custom',
+    description: 'Your own OpenAI-compatible endpoint',
+  },
 ];
 
 const STORAGE_KEY = 'Nimbus-provider';
