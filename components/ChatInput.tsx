@@ -1,13 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Image, SendHorizontal, X } from 'lucide-react';
+import { Spinner } from './LoadingSkeleton';
 
 export interface ChatInputProps {
   onSend: (message: string) => Promise<void>
   initialValue?: string
   isLoading: boolean
+  /** Soft cap before we start showing the character counter. Defaults to 4000. */
+  warnAt?: number
 }
 
-export function ChatInput({ onSend, initialValue = '', isLoading }: ChatInputProps) {
+export function ChatInput({ onSend, initialValue = '', isLoading, warnAt = 4000 }: ChatInputProps) {
   const [input, setInput] = useState(initialValue)
   const [isSending, setIsSending] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
@@ -41,7 +44,7 @@ export function ChatInput({ onSend, initialValue = '', isLoading }: ChatInputPro
     if (file) {
       const base64Image = await convertImageToBase64(file);
       setSelectedImage(base64Image);
-      setInput(''); 
+      setInput('');
     }
   };
 
@@ -58,13 +61,13 @@ export function ChatInput({ onSend, initialValue = '', isLoading }: ChatInputPro
 
   const handleSubmit = useCallback(async (e?: React.FormEvent) => {
     e?.preventDefault()
-    
+
     if ((!input.trim() && !selectedImage) || isLoading || isSending) return
-  
+
     try {
       setIsSending(true)
       setInput('')
-      
+
       if (selectedImage) {
         const imagePrompt = input.trim() || "What's in this image?"
         const imageToSend = JSON.stringify({
@@ -84,7 +87,7 @@ export function ChatInput({ onSend, initialValue = '', isLoading }: ChatInputPro
       setIsSending(false)
     }
   }, [input, selectedImage, isLoading, isSending, onSend])
-  
+
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
@@ -104,30 +107,38 @@ export function ChatInput({ onSend, initialValue = '', isLoading }: ChatInputPro
     }
   }, [initialValue])
 
+  const showCounter = input.length >= warnAt
+  const busy = isLoading || isSending
+  const canSend = !!input.trim() || !!selectedImage
+
   return (
     <div className="max-w-3xl mx-auto">
       {selectedImage && (
         <div className="mb-4 px-4">
           <div className="relative inline-block">
-            <img 
-              src={selectedImage} 
-              alt="Selected" 
+            <img
+              src={selectedImage}
+              alt="Selected"
               className="max-h-32 rounded-lg"
             />
             <button
               onClick={removeSelectedImage}
               className="absolute top-2 right-2 p-1 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
+              aria-label="Remove image"
             >
               <X className="w-4 h-4 text-white" />
             </button>
           </div>
         </div>
       )}
-      
+
       <div className="relative flex items-center">
-        <button 
+        <button
+          type="button"
           onClick={handleImageClick}
           className="absolute left-3 z-10 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+          aria-label="Attach image"
+          disabled={busy}
         >
           <Image className="w-5 h-5 text-gray-400 dark:text-zinc-400" />
         </button>
@@ -138,10 +149,12 @@ export function ChatInput({ onSend, initialValue = '', isLoading }: ChatInputPro
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={selectedImage ? "Ask about this image" : "Ask anything"}
-          disabled={isLoading || isSending}
+          disabled={busy}
           rows={1}
-          className="w-full pl-14 pr-12 py-4 bg-gray-100 dark:bg-zinc-800 rounded-full 
-                    text-gray-900 dark:text-white placeholder-gray-500 
+          maxLength={32000}
+          aria-label="Message"
+          className="w-full pl-14 pr-12 py-4 bg-gray-100 dark:bg-zinc-800 rounded-full
+                    text-gray-900 dark:text-white placeholder-gray-500
                     dark:placeholder-zinc-400 focus:outline-none focus:ring-0
                     disabled:opacity-60 disabled:cursor-not-allowed
                     transition-all duration-200 resize-none overflow-hidden
@@ -157,19 +170,36 @@ export function ChatInput({ onSend, initialValue = '', isLoading }: ChatInputPro
         />
 
         <button
+          type="button"
           onClick={() => handleSubmit()}
-          disabled={isLoading || isSending || (!input.trim() && !selectedImage)}
+          disabled={busy || !canSend}
           className="absolute right-4 z-10 transform disabled:opacity-40 disabled:cursor-not-allowed"
+          aria-label={busy ? 'Sending' : 'Send message'}
         >
-          <SendHorizontal 
-            className={`w-5 h-5 ${
-              input.trim() || selectedImage
-                ? 'text-blue-500 dark:text-blue-400' 
-                : 'text-gray-400 dark:text-zinc-400'
-            }`}
-          />
+          {busy ? (
+            <Spinner className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+          ) : (
+            <SendHorizontal
+              className={`w-5 h-5 ${
+                canSend
+                  ? 'text-blue-500 dark:text-blue-400'
+                  : 'text-gray-400 dark:text-zinc-400'
+              }`}
+            />
+          )}
         </button>
       </div>
+
+      {showCounter && (
+        <p
+          aria-live="polite"
+          className={`text-[11px] text-right mt-1 pr-2 ${
+            input.length > 16000 ? 'text-red-500' : 'text-muted-foreground'
+          }`}
+        >
+          {input.length.toLocaleString()} / 32,000
+        </p>
+      )}
     </div>
   )
 }

@@ -1,7 +1,7 @@
 ﻿'use client';
 
-import { useState, useEffect } from 'react';
-import { Plus, Trash2, MessageSquare, X, Menu } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { Plus, Trash2, MessageSquare, X, Menu, Search } from 'lucide-react';
 import NimbusLogo from './NimbusLogo';
 
 export interface ChatSession {
@@ -11,7 +11,7 @@ export interface ChatSession {
   messages: unknown[];
 }
 
-const STORAGE_KEY = 'Nimbus-chats';
+const STORAGE_KEY = 'nimbus-chats';
 
 export function loadChats(): ChatSession[] {
   if (typeof window === 'undefined') return [];
@@ -28,7 +28,7 @@ export function saveChats(chats: ChatSession[]) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
   } catch {
-    // quota / private mode â€” silently skip
+    // quota / private mode — silently skip
   }
 }
 
@@ -51,6 +51,14 @@ export function Sidebar({
   chats,
   onChatsChange,
 }: SidebarProps) {
+  const [query, setQuery] = useState('');
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return chats;
+    return chats.filter((c) => c.title.toLowerCase().includes(q));
+  }, [chats, query]);
+
   const handleDelete = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     const updated = chats.filter((c) => c.id !== id);
@@ -80,7 +88,7 @@ export function Sidebar({
           flex flex-col h-screen transform transition-transform duration-300 ease-out
           ${open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
           ${open ? '' : 'md:hidden'}`}
-        aria-label="Sohbet geÃ§miÅŸi"
+        aria-label="Sohbet geçmişi"
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
@@ -91,7 +99,7 @@ export function Sidebar({
           <button
             onClick={onClose}
             className="md:hidden p-2 hover:bg-accent rounded-lg transition-colors"
-            aria-label="MenÃ¼yÃ¼ kapat"
+            aria-label="Menüyü kapat"
           >
             <X className="w-5 h-5" />
           </button>
@@ -112,20 +120,42 @@ export function Sidebar({
           </button>
         </div>
 
+        {/* Search */}
+        {chats.length > 0 && (
+          <div className="px-3 pb-2">
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Ara…"
+                aria-label="Sohbetlerde ara"
+                className="w-full pl-8 pr-3 py-1.5 bg-background border border-border rounded-lg
+                  text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Chat list */}
         <div className="flex-1 overflow-y-auto px-2">
           {chats.length === 0 ? (
             <div className="px-3 py-8 text-center">
               <MessageSquare className="w-8 h-8 mx-auto mb-2 text-muted-foreground/40" />
               <p className="text-xs text-muted-foreground">
-                HenÃ¼z sohbet yok.
+                Henüz sohbet yok.
                 <br />
-                Bir mesaj yazÄ±nca otomatik kaydedilir.
+                Bir mesaj yazınca otomatik kaydedilir.
               </p>
             </div>
+          ) : filtered.length === 0 ? (
+            <p className="px-3 py-6 text-center text-xs text-muted-foreground">
+              &ldquo;{query}&rdquo; için eşleşme yok.
+            </p>
           ) : (
             <div className="space-y-1">
-              {chats.map((chat) => {
+              {filtered.map((chat) => {
                 const isActive = currentChatId === chat.id;
                 return (
                   <div
@@ -162,7 +192,7 @@ export function Sidebar({
 
         {/* Footer */}
         <div className="p-4 border-t border-border text-xs text-muted-foreground space-y-1">
-          <p>Nimbus Â· MIT licensed</p>
+          <p>Nimbus · MIT licensed</p>
           <p className="opacity-70">100% unaffiliated with xAI</p>
         </div>
       </aside>
@@ -176,7 +206,7 @@ export function SidebarToggle({ onClick }: { onClick: () => void }) {
     <button
       onClick={onClick}
       className="md:hidden p-2 hover:bg-card rounded-lg transition-colors"
-      aria-label="MenÃ¼yÃ¼ aÃ§"
+      aria-label="Menüyü aç"
     >
       <Menu className="w-5 h-5" />
     </button>

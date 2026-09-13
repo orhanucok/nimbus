@@ -6,6 +6,7 @@ import { ChatMessage } from './ChatMessage';
 import { Pencil, X } from 'lucide-react';
 import RateLimit from './RateLimit';
 import { TypingIndicator } from './LoadingSkeleton';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface ChatProps {
   messages: Message[];
@@ -86,27 +87,42 @@ export function Chat({
       {rateLimitError && <RateLimit />}
       
       {/* 메시지 영역: 하단 여백을 margin으로 변경 */}
-      <div className="mb-32"> 
-        {messages.map((message, index) => (
-          <ChatMessage
-            key={index}
-            messageIndex={index}
-            role={message.role}
-            content={message.content}
-            onStartEdit={message.role === 'user' ? handleStartEdit : undefined}
-            onRegenerate={message.role === 'assistant' ? () => regenerateResponse(index) : undefined}
-          />
-        ))}
-        {partialResponse && (
-          <ChatMessage 
-            role="assistant" 
-            content={partialResponse} 
-            messageIndex={-1}
-          />
-        )}
+      <div className="mb-32">
+        <AnimatePresence initial={false}>
+          {messages.map((message, index) => (
+            <motion.div
+              key={`m-${index}-${message.role}`}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+            >
+              <ChatMessage
+                messageIndex={index}
+                role={message.role}
+                content={message.content}
+                onStartEdit={message.role === 'user' ? handleStartEdit : undefined}
+                onRegenerate={message.role === 'assistant' ? () => regenerateResponse(index) : undefined}
+              />
+            </motion.div>
+          ))}
+          {partialResponse && (
+            <motion.div
+              key="partial"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+            >
+              <ChatMessage
+                role="assistant"
+                content={partialResponse}
+                messageIndex={-1}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
         {isLoading && !partialResponse && <TypingIndicator />}
         {error &&(
-          <div className="py-4 text-center text-red-500">
+          <div role="alert" className="py-4 text-center text-red-500">
             {error}. Try again later.
           </div>
         )}
