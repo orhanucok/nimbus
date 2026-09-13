@@ -2,6 +2,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import type { Components } from 'react-markdown';
 import type { CodeProps } from 'react-markdown/lib/ast-to-react';
+import CodeBlock from './CodeBlock';
 
 interface MessageContent {
   text: string;
@@ -199,7 +200,8 @@ const ChatView: React.FC<ChatViewProps> = ({ content }) => {
     ),
     code: ({ node, inline, className, children, ...props }: CodeProps) => {
       const match = /language-(\w+)/.exec(className || '');
-      
+      const codeText = String(children).replace(/\n$/, '');
+
       if (inline) {
         return (
           <code className={PROSE_STYLES.code.inline} {...props}>
@@ -208,16 +210,10 @@ const ChatView: React.FC<ChatViewProps> = ({ content }) => {
         );
       }
 
-      return match ? (
-        <pre className={PROSE_STYLES.code.block}>
-          <code className={`${className} ${PROSE_STYLES.code.content}`} {...props}>
-            {children}
-          </code>
-        </pre>
-      ) : (
-        <code className={PROSE_STYLES.code.inline} {...props}>
-          {children}
-        </code>
+      // Fenced block: delegate to CodeBlock (header + copy button).
+      // Inline fallback keeps markdown like `foo` working.
+      return (
+        <CodeBlock code={codeText} language={match?.[1]} {...props} />
       );
     },
     strong: ({ children }) => (
