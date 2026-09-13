@@ -130,7 +130,24 @@ export default function Home() {
   const [chats, setChats] = useState<ChatSession[]>([]);
   const [chatId, setChatId] = useState<string>(() => Date.now().toString());
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [settings, setSettings] = useState<SettingsState>(DEFAULT_SETTINGS);
+  const [settings, setSettings] = useState<SettingsState>(() => {
+    if (typeof window === 'undefined') return DEFAULT_SETTINGS;
+    try {
+      const raw = localStorage.getItem('nimbus-settings');
+      return raw ? { ...DEFAULT_SETTINGS, ...JSON.parse(raw) } : DEFAULT_SETTINGS;
+    } catch {
+      return DEFAULT_SETTINGS;
+    }
+  });
+
+  // Persist settings to localStorage whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem('nimbus-settings', JSON.stringify(settings));
+    } catch {
+      // ignore quota errors
+    }
+  }, [settings]);
 
   const {
     messages,
