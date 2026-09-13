@@ -16,6 +16,8 @@ import Sidebar, { SidebarToggle, loadChats, saveChats, type ChatSession } from '
 import ProviderSwitcher from '@/components/ProviderSwitcher';
 import SettingsPanel, { DEFAULT_SETTINGS, type SettingsState } from '@/components/SettingsPanel';
 import ExportChat from '@/components/ExportChat';
+import TokenCounter from '@/components/TokenCounter';
+import useKeyboardShortcuts from '@/hooks/useKeyboardShortcuts';
 
 const convertImageToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -197,6 +199,12 @@ export default function Home() {
     setShowChat(false);
   };
 
+  // Global keyboard shortcuts (Ctrl+K new chat, Esc clear)
+  useKeyboardShortcuts({
+    onNewChat: handleNewChat,
+    onClear: () => setInputValue(''),
+  });
+
   const handleSelectChat = (id: string) => {
     const found = chats.find((c) => c.id === id);
     if (found) {
@@ -248,6 +256,8 @@ useEffect(() => {
                 setisstreetMode={setisstreetMode}
               />
             </div>
+            {messages.length > 0 && <TokenCounter messages={messages} />}
+            <ExportChat messages={messages} chatTitle={chatId} />
             <SettingsPanel value={settings} onChange={setSettings} />
             <ProviderSwitcher />
           </div>
