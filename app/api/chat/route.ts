@@ -68,7 +68,39 @@ export async function POST(request: Request) {
     // the build-time default. Edge runtime supports next/headers cookies().
     const cookieStore = cookies()
     const providerFromCookie = cookieStore.get(COOKIE_NAME)?.value
-    const runtime = getProviderConfig(providerFromCookie, 'chat')
+    let runtime = getProviderConfig(providerFromCookie, 'chat')
+
+    // Custom OpenAI-compatible endpoint: client sends the saved config in
+    // an X-Nimbus-Custom-Provider header (base64-encoded JSON). We decode
+    // it here so the request below uses the user's own baseURL + model.
+    if (providerFromCookie === 'custom') {
+      const raw = request.headers.get('x-nimbus-custom-provider')
+      if (raw) {
+        try {
+          const json = decodeURIComponent(escape(atob(raw)))
+          const parsed = JSON.parse(json) as {
+            baseURL?: unknown
+            model?: unknown
+            apiKey?: unknown
+          }
+          if (
+            typeof parsed.baseURL === 'string' &&
+            typeof parsed.model === 'string'
+          ) {
+            runtime = {
+              BaseURL: parsed.baseURL.replace(/\/+$/, ''),
+              API_KEY:
+                typeof parsed.apiKey === 'string' && parsed.apiKey
+                  ? parsed.apiKey
+                  : 'custom',
+              Model: parsed.model,
+            }
+          }
+        } catch (e) {
+          console.warn('Failed to decode custom provider header:', e)
+        }
+      }
+    }
 
     // Get last message for the API request (with enhanced prompt)
     const lastMessage = messages[messages.length - 1]

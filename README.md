@@ -95,8 +95,17 @@ Pick any OpenAI-compatible LLM provider. Switch via `LLM_PROVIDER` in `.env.loca
 | **xAI (Grok)** | `api.x.ai/v1` | `grok-beta` | Original Grok |
 | **OpenRouter** | `openrouter.ai/api/v1` | `meta-llama/llama-3.3-70b-instruct` | Access to many models |
 | **Ollama** | `localhost:11434/v1` | `llama3.2` | Run locally, fully private |
+| **Custom…** | _your URL_ | _your model_ | Any OpenAI-compatible endpoint (Together, LM Studio, your own router, …). Configure in the header dropdown — no env edit needed. |
 
 For each, override the model by setting `<PROVIDER>_MODEL=...` in `.env.local`.
+
+### Runtime switching
+
+Pick a provider at runtime from the header dropdown — no `.env.local` edit, no server restart.
+The choice is stored in a `nimbus-provider` cookie (1 year) and read by `/api/chat`.
+
+For **Custom…** the saved endpoint URL, model, and API key live in `localStorage` and are
+sent on every request as the `X-Nimbus-Custom-Provider` header.
 
 ## ğŸ¯ Features
 
@@ -121,6 +130,8 @@ For each, override the model by setting `<PROVIDER>_MODEL=...` in `.env.local`.
 - ğŸšï¸ Rate limiting (Upstash Redis, optional)
 - ğŸ“Š Vercel Analytics built-in
 - ğŸ” BYOK â€” keys stay in `.env.local`, never sent to Nimbus
+- ğŸ§ª Vitest + Testing Library — 50+ unit tests across components, hooks, and config
+- ğŸª„ ErrorBoundary, loading skeletons, empty states, focus traps, ARIA labels
 
 ## ğŸ› ï¸ Optional integrations
 
@@ -246,6 +257,9 @@ MIT â€” see [LICENSE](LICENSE).
 
 ## ğŸ—ºï¸ Roadmap
 
+- [x] Custom OpenAI-compatible provider (header dropdown)
+- [x] Runtime provider switching via cookie
+- [x] Export conversation to Markdown / JSON
 - [ ] Anthropic (Claude) provider support
 - [ ] Voice mode (TTS/STT)
 - [ ] Persistent chat history (Postgres / SQLite)
@@ -253,7 +267,6 @@ MIT â€” see [LICENSE](LICENSE).
 - [ ] Mobile PWA polish
 - [ ] Self-host one-click installer (Docker Compose)
 - [ ] Plugin system (custom tools per provider)
-- [ ] Conversation sharing (export to markdown / JSON)
 
 ---
 

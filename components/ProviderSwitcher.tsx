@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ChevronDown, Server } from 'lucide-react';
+import CustomProviderDialog from '@/components/CustomProviderDialog';
 
 export interface ProviderInfo {
   id: string;
@@ -56,13 +57,19 @@ export const PROVIDERS: ProviderInfo[] = [
 ];
 
 const STORAGE_KEY = 'Nimbus-provider';
+const COOKIE_NAME = 'nimbus-provider';
+
+function setProviderCookie(id: string) {
+  // 1-year cookie so the runtime provider sticks across reloads.
+  document.cookie = `${COOKIE_NAME}=${id}; path=/; max-age=31536000; samesite=lax`;
+}
 
 interface ProviderSwitcherProps {
   /** Currently active provider id (controlled). Falls back to localStorage. */
   value?: string;
   /** Called when user picks a different provider. */
   onChange?: (id: string) => void;
-  /** Visual variant â€” 'header' for compact header use, 'block' for settings. */
+  /** Visual variant — 'header' for compact header use, 'block' for settings. */
   variant?: 'header' | 'block';
 }
 
@@ -73,6 +80,7 @@ export function ProviderSwitcher({
 }: ProviderSwitcherProps) {
   const [internal, setInternal] = useState<string>('deepseek');
   const [open, setOpen] = useState(false);
+  const [customDialogOpen, setCustomDialogOpen] = useState(false);
 
   // Hydrate from localStorage once on mount.
   useEffect(() => {
@@ -85,10 +93,25 @@ export function ProviderSwitcher({
   const active = value ?? internal;
 
   const handleSelect = (id: string) => {
+    if (id === 'custom') {
+      // Open the dialog instead of selecting "custom" directly.
+      setOpen(false);
+      setCustomDialogOpen(true);
+      return;
+    }
     if (!value) setInternal(id);
     localStorage.setItem(STORAGE_KEY, id);
+    setProviderCookie(id);
     onChange?.(id);
     setOpen(false);
+  };
+
+  const handleCustomSaved = () => {
+    // Persist the "custom" selection so reloads keep the user on custom.
+    if (!value) setInternal('custom');
+    localStorage.setItem(STORAGE_KEY, 'custom');
+    setProviderCookie('custom');
+    onChange?.('custom');
   };
 
   const current = PROVIDERS.find((p) => p.id === active) ?? PROVIDERS[0];
@@ -110,7 +133,7 @@ export function ProviderSwitcher({
             <div className="flex items-center justify-between mb-1">
               <span className="font-medium">{p.name}</span>
               {p.id === active && (
-                <span className="text-xs text-blue-500 font-semibold">âœ“ Active</span>
+                <span className="text-xs text-blue-500 font-semibold">✓ Active</span>
               )}
             </div>
             <p className="text-xs text-muted-foreground mb-2">{p.description}</p>
@@ -119,6 +142,11 @@ export function ProviderSwitcher({
             </code>
           </button>
         ))}
+        <CustomProviderDialog
+          open={customDialogOpen}
+          onClose={() => setCustomDialogOpen(false)}
+          onSaved={handleCustomSaved}
+        />
       </div>
     );
   }
@@ -181,7 +209,7 @@ export function ProviderSwitcher({
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{p.name}</span>
                   {p.id === active && (
-                    <span className="text-xs text-blue-500">âœ“</span>
+                    <span className="text-xs text-blue-500">✓</span>
                   )}
                 </div>
                 <div className="text-xs text-muted-foreground mt-0.5">
@@ -195,6 +223,12 @@ export function ProviderSwitcher({
           </div>
         </>
       )}
+
+      <CustomProviderDialog
+        open={customDialogOpen}
+        onClose={() => setCustomDialogOpen(false)}
+        onSaved={handleCustomSaved}
+      />
     </div>
   );
 }

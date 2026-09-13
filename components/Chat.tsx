@@ -5,6 +5,7 @@ import { ChatInput } from './ChatInput';
 import { ChatMessage } from './ChatMessage';
 import { Pencil, X } from 'lucide-react';
 import RateLimit from './RateLimit';
+import { TypingIndicator } from './LoadingSkeleton';
 
 interface ChatProps {
   messages: Message[];
@@ -103,11 +104,7 @@ export function Chat({
             messageIndex={-1}
           />
         )}
-        {isLoading && !partialResponse && (
-          <div className="py-4 text-center text-zinc-500 dark:text-zinc-400">
-            Thinking...
-          </div>
-        )}
+        {isLoading && !partialResponse && <TypingIndicator />}
         {error &&(
           <div className="py-4 text-center text-red-500">
             {error}. Try again later.

@@ -4,6 +4,10 @@ import { Message, defaultConfig, createChatMessages, ChatParameters, ChatRequest
 import { functionCalling } from '@/app/function-calling'
 import { config } from '@/app/config'
 import { fetchVideoInfo } from '@/lib/fetchinfo'
+import {
+  loadCustomProvider,
+  encodeCustomProviderHeader,
+} from '@/lib/customProvider'
 
 interface UseChatOptions {
   systemPrompt?: string
@@ -642,11 +646,29 @@ const regenerateResponse = useCallback(async (messageIndex: number) => {
 
 
   async function sendChatRequest(chatMessages: ChatRequestMessage[]) {
+    // If the user picked "custom" provider, ship the saved config to the
+    // backend in a header so /api/chat can resolve the right baseURL/model.
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    try {
+      const providerCookie = document.cookie
+        .split('; ')
+        .find((c) => c.startsWith('nimbus-provider='))
+        ?.split('=')[1];
+      if (providerCookie === 'custom') {
+        const cfg = loadCustomProvider();
+        if (cfg) {
+          headers['X-Nimbus-Custom-Provider'] = encodeCustomProviderHeader(cfg);
+        }
+      }
+    } catch {
+      // ignore — backend will fall back to build-time provider
+    }
+
     const response = await fetch('/api/chat', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify({
         messages: chatMessages,
         parameters: {

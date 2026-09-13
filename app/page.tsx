@@ -1,7 +1,7 @@
 ﻿'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
-import { SendHorizontal, Image, ArrowLeft, X } from 'lucide-react';
+import { SendHorizontal, Image, ArrowLeft, X, Keyboard } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Chat } from '@/components/Chat';
 import { useChat } from '@/hooks/useChat';
@@ -33,30 +33,36 @@ const convertImageToBase64 = (file: File): Promise<string> => {
 };
 
 
-const SuggestionCard = ({ 
-  icon, 
-  title, 
+const SuggestionCard = ({
+  icon,
+  title,
   onClick,
   isYouTube = false
-}: { 
-  icon: React.ReactNode, 
+}: {
+  icon: React.ReactNode,
   title: string,
   onClick: (title: string) => void,
   isYouTube?: boolean
 }) => (
-  <Card 
-    className="bg-card hover:bg-card/80 transition-colors cursor-pointer border-0"
-    onClick={() => onClick(isYouTube ? "Paste your YouTube link here and ask anything about the video (e.g. 'summarize this video:', 'explain from 1:45 to 3:20')" : title)}
+  <motion.div
+    whileHover={{ y: -3 }}
+    whileTap={{ scale: 0.98 }}
+    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
   >
-    <CardContent className="flex flex-col h-full p-4">
-      <h3 className="text-base text-card-foreground mb-14 flex-grow">
-        {isYouTube ? "Chat about YouTube videos" : title}
-      </h3>
-      <div className="text-blue-400">
-        {icon}
-      </div>
-    </CardContent>
-  </Card>
+    <Card
+      className="bg-card hover:bg-card/80 transition-colors cursor-pointer border-0 h-full"
+      onClick={() => onClick(isYouTube ? "Paste your YouTube link here and ask anything about the video (e.g. 'summarize this video:', 'explain from 1:45 to 3:20')" : title)}
+    >
+      <CardContent className="flex flex-col h-full p-4">
+        <h3 className="text-base text-card-foreground mb-14 flex-grow">
+          {isYouTube ? "Chat about YouTube videos" : title}
+        </h3>
+        <div className="text-blue-400">
+          {icon}
+        </div>
+      </CardContent>
+    </Card>
+  </motion.div>
 );
 
 
@@ -467,6 +473,25 @@ return (
           <span className="opacity-70">100% unaffiliated with xAI.</span>
         </p>
 
+      </motion.div>
+
+      {/* Keyboard shortcuts hint */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3, ease: 'easeOut' }}
+        className="flex items-center justify-center gap-2 mb-6 text-xs text-muted-foreground"
+      >
+        <Keyboard className="w-3.5 h-3.5 opacity-60" />
+        <span className="opacity-70">Shortcuts:</span>
+        <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border font-mono">Ctrl+K</kbd>
+        <span>new chat</span>
+        <span className="opacity-40">·</span>
+        <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border font-mono">Esc</kbd>
+        <span>clear input</span>
+        <span className="opacity-40">·</span>
+        <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border font-mono">Enter</kbd>
+        <span>send</span>
       </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
