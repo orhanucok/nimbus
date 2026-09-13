@@ -11,6 +11,8 @@ interface ShortcutHandlers {
   onHistoryUp?: () => void;
   /** ArrowDown (no input focused) — recall next draft from history. */
   onHistoryDown?: () => void;
+  /** "?" — toggle the keyboard shortcuts help overlay. */
+  onToggleHelp?: () => void;
 }
 
 /**
@@ -24,9 +26,11 @@ interface ShortcutHandlers {
  * - `↑` / `↓`             → recall draft from in-memory history
  *                           (suppressed inside inputs so cursor navigation
  *                           keeps working)
+ * - `?`                   → toggle keyboard shortcuts help (suppressed
+ *                           inside text fields so typing "?" works normally)
  */
 export function useKeyboardShortcuts(handlers: ShortcutHandlers): void {
-  const { onNewChat, onClear, onHistoryUp, onHistoryDown } = handlers;
+  const { onNewChat, onClear, onHistoryUp, onHistoryDown, onToggleHelp } = handlers;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -45,6 +49,13 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers): void {
       if (isMod && key === 'k') {
         event.preventDefault();
         onNewChat?.();
+        return;
+      }
+
+      // Toggle help — only when not editing a field (so "?" still types)
+      if (!inField && !isMod && !event.altKey && event.key === '?') {
+        event.preventDefault();
+        onToggleHelp?.();
         return;
       }
 
@@ -72,7 +83,7 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers): void {
     return () => {
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, [onNewChat, onClear, onHistoryUp, onHistoryDown]);
+  }, [onNewChat, onClear, onHistoryUp, onHistoryDown, onToggleHelp]);
 }
 
 export default useKeyboardShortcuts;

@@ -3,9 +3,10 @@ import { ThemeProvider } from 'next-themes'
 import { IconGitHub } from '@/components/ui/icons'
 import NimbusLogo from '@/components/NimbusLogo'
 import { Analytics } from "@vercel/analytics/react"
+import { ToastProvider } from '@/components/Toast'
 
 export const metadata = {
-  title: 'Nimbus â€” Open-source Grok alternative',
+  title: 'Nimbus — Open-source Grok alternative',
   description:
     'Nimbus is a free, MIT-licensed Grok-style AI chatbot. Bring your own API key (DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama).',
   keywords: [
@@ -18,13 +19,13 @@ export const metadata = {
   publisher: 'Nimbus',
   manifest: '/manifest.json',
   openGraph: {
-    title: 'Nimbus â€” Open-source Grok alternative',
+    title: 'Nimbus — Open-source Grok alternative',
     description: 'Grok-style AI chatbot. Multi-provider. MIT. Self-hostable.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Nimbus â€” Open-source Grok alternative',
+    title: 'Nimbus — Open-source Grok alternative',
     description: 'Grok-style AI chatbot. Multi-provider. MIT. Self-hostable.',
   },
   icons: {
@@ -48,19 +49,42 @@ export const metadata = {
 
 const Footer = () => (
   <footer className="fixed bottom-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-t border-border/40">
-    <div className="max-w-3xl mx-auto p-2 flex items-center justify-center gap-3 text-xs text-muted-foreground">
-      <span>Nimbus Â· MIT licensed</span>
-      <a
-        href="https://github.com/DatoBHJ/grok-clone"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="p-1.5 rounded-full hover:bg-accent transition-colors"
-        aria-label="Original repo (DatoBHJ/grok-clone)"
-        title="Built on DatoBHJ/grok-clone (MIT)"
-      >
-        <IconGitHub className="h-4 w-4 text-muted-foreground hover:text-foreground" />
-      </a>
-      <span>100% unaffiliated with xAI</span>
+    <div className="max-w-3xl mx-auto p-2 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+      <div className="flex items-center gap-2 sm:gap-3">
+        <NimbusLogo className="w-4 h-4" />
+        <span>Nimbus · MIT</span>
+        <a
+          href="https://github.com/orhanucok/nimbus/releases/tag/v1.22.0"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-1.5 py-0.5 rounded-md border border-border/40 hover:bg-accent transition-colors font-mono text-[10px]"
+          title="View release notes"
+        >
+          v1.22.0
+        </a>
+      </div>
+      <div className="flex items-center gap-2">
+        <a
+          href="https://github.com/orhanucok/nimbus"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-1.5 rounded-full hover:bg-accent transition-colors"
+          aria-label="Nimbus on GitHub"
+          title="Star on GitHub"
+        >
+          <IconGitHub className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+        </a>
+        <a
+          href="https://github.com/DatoBHJ/grok-clone"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[10px] opacity-60 hover:opacity-100 transition-opacity hidden sm:inline"
+          title="Built on DatoBHJ/grok-clone (MIT)"
+        >
+          attribution
+        </a>
+        <span className="opacity-60 hidden sm:inline">100% unaffiliated with xAI</span>
+      </div>
     </div>
   </footer>
 );
@@ -74,10 +98,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="bg-background text-foreground min-h-screen">
-            {children}
-            <Footer />
-          </div>
+          <ToastProvider>
+            <div className="bg-background text-foreground min-h-screen">
+              {children}
+              <Footer />
+            </div>
+          </ToastProvider>
         </ThemeProvider>
         <Analytics />
       </body>

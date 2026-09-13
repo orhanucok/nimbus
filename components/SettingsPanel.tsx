@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Settings, X } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Download, Settings, Upload, X } from 'lucide-react';
+import { useToast } from './Toast';
 
 export interface SettingsState {
   temperature: number;
@@ -56,6 +57,54 @@ export function SettingsPanel({
   className,
 }: SettingsPanelProps) {
   const [open, setOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const toast = useToast();
+
+  const handleExport = () => {
+    try {
+      const blob = new Blob([JSON.stringify(value, null, 2)], {
+        type: 'application/json',
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `nimbus-settings-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.show('success', 'Settings exported');
+    } catch {
+      toast.show('error', 'Export failed');
+    }
+  };
+
+  const handleImportClick = () => fileInputRef.current?.click();
+
+  const handleImportFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text) as Partial<SettingsState>;
+      if (
+        typeof parsed.temperature !== 'number' ||
+        typeof parsed.maxTokens !== 'number' ||
+        typeof parsed.systemPrompt !== 'string'
+      ) {
+        toast.show('error', 'Invalid settings file');
+        return;
+      }
+      onChange({
+        temperature: Math.min(2, Math.max(0, parsed.temperature)),
+        maxTokens: Math.min(32000, Math.max(64, parsed.maxTokens)),
+        systemPrompt: parsed.systemPrompt,
+      });
+      toast.show('success', 'Settings imported');
+    } catch {
+      toast.show('error', 'Import failed');
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
 
   const set = <K extends keyof SettingsState>(
     key: K,
@@ -160,13 +209,43 @@ export function SettingsPanel({
               />
             </div>
 
-            <button
-              type="button"
-              onClick={() => onChange(DEFAULT_SETTINGS)}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Varsayılanlara sıfırla
-            </button>
+            <div className="flex items-center justify-between pt-2 border-t border-border">
+              <button
+                type="button"
+                onClick={() => onChange(DEFAULT_SETTINGS)}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Varsayılanlara sıfırla
+              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={handleImportClick}
+                  className="p-1.5 rounded hover:bg-accent transition-colors"
+                  aria-label="Import settings"
+                  title="Import settings"
+                >
+                  <Upload className="w-3.5 h-3.5 opacity-70" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleExport}
+                  className="p-1.5 rounded hover:bg-accent transition-colors"
+                  aria-label="Export settings"
+                  title="Export settings"
+                >
+                  <Download className="w-3.5 h-3.5 opacity-70" />
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="application/json,.json"
+                  className="hidden"
+                  onChange={handleImportFile}
+                  aria-hidden="true"
+                />
+              </div>
+            </div>
           </div>
         </>
       )}

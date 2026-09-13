@@ -1,8 +1,9 @@
 import { MessageContent } from "@/types/chat"
-import { Copy, Pencil, RotateCcw, Share, ThumbsDown, ThumbsUp } from "lucide-react"
+import { Check, Copy, Pencil, RotateCcw, Share, ThumbsDown, ThumbsUp } from "lucide-react"
 import { useState } from "react"
 import ChatView from "./ChatView"
 import SourcePills from "./SourcePills"
+import { useToast } from "./Toast"
 
 interface ChatMessageProps {
   role: 'assistant' | 'user' | 'system'
@@ -21,12 +22,18 @@ export function ChatMessage({
 }: ChatMessageProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditHovered, setIsEditHovered] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const toast = useToast();
 
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
+      setCopied(true);
+      toast.show('success', 'Copied to clipboard', 1800);
+      setTimeout(() => setCopied(false), 1500);
     } catch (err) {
       console.error('Failed to copy text: ', err);
+      toast.show('error', 'Copy failed');
     }
   };
 
@@ -128,11 +135,17 @@ export function ChatMessage({
           
           <div className="flex gap-3 mb-4">
             {hasText && (
-              <button 
+              <button
                 className="p-1.5 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-md transition-colors group"
                 onClick={() => copyToClipboard(parsedContent.text)}
+                aria-label={copied ? 'Copied' : 'Copy message'}
+                title={copied ? 'Copied' : 'Copy'}
               >
-                <Copy size={20} className="text-gray-400 dark:text-zinc-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors" />
+                {copied ? (
+                  <Check size={20} className="text-green-500 dark:text-green-400 transition-colors" />
+                ) : (
+                  <Copy size={20} className="text-gray-400 dark:text-zinc-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors" />
+                )}
               </button>
             )}
             <button className="p-1.5 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-md transition-colors group">

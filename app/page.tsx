@@ -18,6 +18,7 @@ import SettingsPanel, { DEFAULT_SETTINGS, type SettingsState } from '@/component
 import ExportChat from '@/components/ExportChat';
 import TokenCounter from '@/components/TokenCounter';
 import useKeyboardShortcuts from '@/hooks/useKeyboardShortcuts';
+import KeyboardHelpOverlay from '@/components/KeyboardHelpOverlay';
 
 const convertImageToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -138,6 +139,7 @@ export default function Home() {
   const [chats, setChats] = useState<ChatSession[]>([]);
   const [chatId, setChatId] = useState<string>(() => Date.now().toString());
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [settings, setSettings] = useState<SettingsState>(() => {
     if (typeof window === 'undefined') return DEFAULT_SETTINGS;
     try {
@@ -205,10 +207,11 @@ export default function Home() {
     setShowChat(false);
   };
 
-  // Global keyboard shortcuts (Ctrl+K new chat, Esc clear)
+  // Global keyboard shortcuts (Ctrl+K new chat, Esc clear, ? help)
   useKeyboardShortcuts({
     onNewChat: handleNewChat,
     onClear: () => setInputValue(''),
+    onToggleHelp: () => setHelpOpen((v) => !v),
   });
 
   const handleSelectChat = (id: string) => {
@@ -369,6 +372,7 @@ if (showChat) {
           </div>
         </main>
       </div>
+      <KeyboardHelpOverlay open={helpOpen} onClose={() => setHelpOpen(false)} />
     </div>
   );
 }
@@ -480,7 +484,7 @@ return (
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3, ease: 'easeOut' }}
-        className="flex items-center justify-center gap-2 mb-6 text-xs text-muted-foreground"
+        className="flex items-center justify-center gap-2 mb-6 text-xs text-muted-foreground flex-wrap"
       >
         <Keyboard className="w-3.5 h-3.5 opacity-60" />
         <span className="opacity-70">Shortcuts:</span>
@@ -488,10 +492,19 @@ return (
         <span>new chat</span>
         <span className="opacity-40">·</span>
         <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border font-mono">Esc</kbd>
-        <span>clear input</span>
+        <span>clear</span>
         <span className="opacity-40">·</span>
         <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border font-mono">Enter</kbd>
         <span>send</span>
+        <span className="opacity-40">·</span>
+        <button
+          type="button"
+          onClick={() => setHelpOpen(true)}
+          className="underline decoration-dotted underline-offset-2 opacity-70 hover:opacity-100 transition-opacity"
+        >
+          <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border font-mono">?</kbd>
+          <span className="ml-1">all shortcuts</span>
+        </button>
       </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -546,6 +559,7 @@ return (
           />
         </div> */}
       </main>
+      <KeyboardHelpOverlay open={helpOpen} onClose={() => setHelpOpen(false)} />
     </div>
   );
 }

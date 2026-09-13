@@ -4,6 +4,43 @@ All notable changes to **Nimbus** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.23.0] – 2026-09-13 — Toast system + keyboard help overlay
+
+### Added
+- **`Toast` system** (`components/Toast.tsx`, `useToast` hook): global bottom-right
+  notifications with `success` / `error` / `info` variants. Auto-dismiss with
+  configurable duration, `role="alert"` for errors, `role="status"` for others,
+  Framer Motion enter/exit animations. Provider mounted in `app/layout.tsx`.
+- **`KeyboardHelpOverlay`** (`components/KeyboardHelpOverlay.tsx`): modal listing
+  every shortcut, opened with `?`. Press `?` anywhere outside a text field to
+  toggle, `Esc` to close. Backdrop click also closes.
+- **`useKeyboardShortcuts` `onToggleHelp`** handler wired to `?` key (suppressed
+  inside text inputs so typing `?` still works).
+- **Settings export / import**: new buttons in `SettingsPanel`. Export downloads
+  `nimbus-settings-YYYY-MM-DD.json`; import reads JSON, validates shape, clamps
+  temperature (0–2) and max tokens (64–32000), and toasts on success/error.
+- **Footer upgrade**: brand mark + `v1.22.0` release badge that deep-links to
+  GitHub release notes, plus a real GitHub star link. Hidden on small screens.
+- **SEO**: `app/robots.ts` (allows `/`, disallows `/api/`) and `app/sitemap.ts`
+  (homepage + 3 section anchors).
+
+### Changed
+- `ChatMessage` copy button now shows a transient `Check` icon and a success
+  toast for ~1.5s after copying. Adds `aria-label` flipping between "Copy" and
+  "Copied" for screen readers.
+- Landing page shortcut hint row gains a `? all shortcuts` affordance that opens
+  the new overlay.
+
+### Tests
+- `tests/toast.test.tsx` — 6 specs (provider guard, success/error/info render,
+  zero-duration persistence, auto-dismiss, manual dismiss).
+- `tests/keyboard-help-overlay.test.tsx` — 5 specs (closed state, content,
+  Esc, backdrop, X button).
+- `tests/use-keyboard-shortcuts.test.tsx` — 5 specs (Ctrl+K, ? outside fields,
+  ? suppressed in input, Esc, arrows).
+
+Total: 67+ unit tests across 11 test files.
+
 ## [Unreleased]
 
 ### Added
