@@ -2,6 +2,8 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import type { Components } from 'react-markdown';
 import type { CodeProps } from 'react-markdown/lib/ast-to-react';
+import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeRaw from 'rehype-raw';
 import CodeBlock from './CodeBlock';
 
 interface MessageContent {
@@ -228,11 +230,24 @@ const ChatView: React.FC<ChatViewProps> = ({ content }) => {
     ),
   };
 
+  // rehype-pretty-code options: github-dark matches the dark-mode default;
+  // we also keep a light variant via prefers-color-scheme media query.
+  const rehypePlugins = [
+    rehypeRaw,
+    [
+      rehypePrettyCode,
+      {
+        theme: { dark: 'github-dark', light: 'github-light' },
+        keepBackground: false,
+      } as Parameters<typeof rehypePrettyCode>[1],
+    ],
+  ];
+
   if (typeof content === 'string') {
     return (
       <div className={PROSE_STYLES.container}>
         <article className={PROSE_STYLES.article}>
-          <ReactMarkdown components={components} skipHtml>
+          <ReactMarkdown components={components} rehypePlugins={rehypePlugins} skipHtml>
             {content}
           </ReactMarkdown>
         </article>
@@ -243,7 +258,7 @@ const ChatView: React.FC<ChatViewProps> = ({ content }) => {
   return (
     <div className={PROSE_STYLES.container}>
       <article className={PROSE_STYLES.article}>
-        <ReactMarkdown components={components} skipHtml>
+        <ReactMarkdown components={components} rehypePlugins={rehypePlugins} skipHtml>
           {content.text}
         </ReactMarkdown>
         {content.images && <ImageGrid images={content.images} />}
