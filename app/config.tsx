@@ -42,6 +42,29 @@ const PROVIDERS: Record<ProviderName, { baseURL: string; apiKey: string | undefi
 const primary = PROVIDERS[PRIMARY];
 const fc = PROVIDERS[FC];
 
+// Runtime-resolved provider config. Allows runtime switching via cookie
+// (the ProviderSwitcher dropdown in the chat header sets the cookie;
+// /api/chat reads it via next/headers cookies()). Falls back to the
+// build-time env when the cookie is absent.
+export type ResolvedProviderConfig = {
+  BaseURL: string;
+  API_KEY: string | undefined;
+  Model: string;
+};
+
+export function getProviderConfig(
+  providerId: string | undefined | null,
+  kind: 'chat' | 'fc' = 'chat'
+): ResolvedProviderConfig {
+  const id = (providerId ?? '') as ProviderName;
+  const map = PROVIDERS[id] ?? (kind === 'fc' ? PROVIDERS.groq : PROVIDERS.deepseek);
+  return {
+    BaseURL: map.baseURL,
+    API_KEY: map.apiKey,
+    Model: map.model,
+  };
+}
+
 export const config = {
   // Active provider (echo for debugging)
   provider: PRIMARY,

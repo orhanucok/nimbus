@@ -259,7 +259,11 @@ useEffect(() => {
             {messages.length > 0 && <TokenCounter messages={messages} />}
             <ExportChat messages={messages} chatTitle={chatId} />
             <SettingsPanel value={settings} onChange={setSettings} />
-            <ProviderSwitcher />
+            <ProviderSwitcher
+              onChange={(id) => {
+                document.cookie = `nimbus-provider=${id}; path=/; max-age=31536000; samesite=lax`;
+              }}
+            />
           </div>
         </div>
       </header>

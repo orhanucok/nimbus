@@ -1,7 +1,11 @@
 // app/api/chat/route.ts
+import { cookies } from 'next/headers'
 import { createRequestBody, defaultConfig } from '@/types/chat'
+import { getProviderConfig } from '@/app/config'
 import { NextResponse } from 'next/server'
-export const runtime = 'edge' 
+export const runtime = 'edge'
+
+const COOKIE_NAME = 'nimbus-provider'
 
 // Helper function to clean enhanced prompts from message history
 function cleanEnhancedPrompt(content: string): string {
@@ -60,23 +64,29 @@ export async function POST(request: Request) {
   try {
     const { messages, parameters } = await request.json()
 
+    // Runtime provider selection: cookie (set by ProviderSwitcher) overrides
+    // the build-time default. Edge runtime supports next/headers cookies().
+    const cookieStore = cookies()
+    const providerFromCookie = cookieStore.get(COOKIE_NAME)?.value
+    const runtime = getProviderConfig(providerFromCookie, 'chat')
+
     // Get last message for the API request (with enhanced prompt)
     const lastMessage = messages[messages.length - 1]
     console.log('Last message:', lastMessage)
-    
+
     // Clean history messages but keep the last message as is
     const cleanedMessages = [
       ...cleanImageMessages(messages.slice(0, -1)),
       lastMessage
     ]
-    
+
     const requestBody = createRequestBody(cleanedMessages, parameters)
-    
-    const response = await fetch(`${defaultConfig.api.baseURL}/chat/completions`, {
+
+    const response = await fetch(`${runtime.BaseURL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${defaultConfig.api.key}`
+        'Authorization': `Bearer ${runtime.API_KEY}`
       },
       body: JSON.stringify(requestBody)
     })
