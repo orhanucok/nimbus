@@ -14,6 +14,8 @@ import NimbusLogo from '@/components/NimbusLogo';
 import { motion } from 'framer-motion';
 import Sidebar, { SidebarToggle, loadChats, saveChats, type ChatSession } from '@/components/Sidebar';
 import ProviderSwitcher from '@/components/ProviderSwitcher';
+import SettingsPanel, { DEFAULT_SETTINGS, type SettingsState } from '@/components/SettingsPanel';
+import ExportChat from '@/components/ExportChat';
 
 const convertImageToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -128,6 +130,7 @@ export default function Home() {
   const [chats, setChats] = useState<ChatSession[]>([]);
   const [chatId, setChatId] = useState<string>(() => Date.now().toString());
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [settings, setSettings] = useState<SettingsState>(DEFAULT_SETTINGS);
 
   const {
     messages,
@@ -228,6 +231,7 @@ useEffect(() => {
                 setisstreetMode={setisstreetMode}
               />
             </div>
+            <SettingsPanel value={settings} onChange={setSettings} />
             <ProviderSwitcher />
           </div>
         </div>
