@@ -4,6 +4,36 @@ All notable changes to **Nimbus** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.30.0] – 2026-09-15 — Public deploy infrastructure
+
+### Added
+- **`/api/health`** — liveness + version probe (`{ ok, service, version, runtime,
+  uptime, now }`). Used by Vercel/Docker healthchecks and the smoke test in
+  the deploy script.
+- **`scripts/vercel-deploy.sh`** — one-shot Vercel deploy helper. Runs
+  `npm ci` → `lint` → `typecheck` → `build` → `vercel deploy`, then curls
+  `/api/health` on the live URL. Use `./scripts/vercel-deploy.sh preview`
+  for a preview URL or `./scripts/vercel-deploy.sh production` to promote.
+- **`DEPLOY.md`** — comprehensive deploy guide covering Vercel, Docker, and
+  static export. Includes the env-var table, docker-compose snippet, health
+  check recipe, and a post-deploy smoke checklist.
+
+### Changed
+- **`next.config.js`** — disables next-pwa's built-in SW generator
+  (`register: false`, `disable: true`) so our hand-written
+  `public/sw.js` is never overwritten. Adds a `Service-Worker-Allowed: /`
+  header on `/sw.js` so it can claim the root scope, plus tightened
+  security headers (X-Content-Type-Options, X-Frame-Options, Referrer-Policy).
+- **`.github/workflows/ci.yml`** — adds an `npm test` step so the full
+  Vitest suite runs on every push and PR.
+- **`README.md`** — Deploy section links to `DEPLOY.md` and mentions the
+  one-command deploy; Live demo banner added to the header.
+
+### Tests
+- `tests/api-health.test.ts` — 1 spec (validates the response shape).
+
+Total: 124+ unit tests across 21 files.
+
 ## [1.29.0] – 2026-09-15 — Remote pairing (mobile control)
 
 ### Added

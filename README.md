@@ -14,7 +14,9 @@
 A self-hosted AI chatbot with Grok-style personality. Bring your own API key â€”
 DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama.
 
-[Quick Start](#-quick-start) Â· [Providers](#-providers) Â· [Features](#-features) Â· [Deploy](#-deploy) Â· [Attribution](#-attribution)
+[Quick Start](#-quick-start) · [Providers](#-providers) · [Features](#-features) · [Deploy](#-deploy) · [API](#-public-rest-api-v1) · [Attribution](#-attribution)
+
+**Live demo:** *deploy your own in 5 minutes with `./scripts/vercel-deploy.sh production`*
 
 ![Preview](assets/preview.png)
 
@@ -183,6 +185,20 @@ lib/                            # URL fetching, YouTube transcript, utils
 ```
 
 ## ğŸš¢ Deploy
+
+See **[DEPLOY.md](DEPLOY.md)** for the full guide. TL;DR:
+
+```bash
+# Vercel (one command)
+./scripts/vercel-deploy.sh production
+
+# Docker
+docker build -t Nimbus:latest .
+docker run -p 3000:3000 --env-file .env.local Nimbus:latest
+
+# Smoke test after deploy
+curl https://your-app.vercel.app/api/health
+```
 
 ### Vercel (easiest)
 

@@ -30,6 +30,9 @@ jobs:
       - name: Lint
         run: npm run lint || true
 
+      - name: Unit tests
+        run: npm test -- --reporter=verbose
+
       - name: Build
         run: npm run build
         env:
