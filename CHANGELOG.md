@@ -4,6 +4,36 @@ All notable changes to **Nimbus** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.24.0] – 2026-09-15 — Public REST API v1 + API key manager
+
+### Added
+- **`POST /api/v1/chat`** — first public REST endpoint. Streams chat completions
+  via SSE (default) or returns JSON with `stream: false`. Same multi-provider
+  resolution as the browser UI (`providerId` override, cookie fallback, env
+  fallback, custom OpenAI-compatible via `X-Nimbus-Custom-Provider`).
+- **`lib/apiAuth.ts`** — API-key minting (`nmb_<8>_<32>`), SHA-256 hashing,
+  sync implementation that runs in the Edge runtime, bearer-token parsing,
+  localStorage-backed key store. The full key is shown once at creation; only
+  the SHA-256 hash + last-4 survive.
+- **`/settings/api-keys`** — UI to create, reveal, copy, revoke, and delete
+  API keys. Curl example embedded. Toasts on every action.
+- **`components/ApiKeyManager.tsx`** — reusable component (also imported by the
+  page) with green banner for newly minted plaintext, reveal/hide toggle, and
+  per-row revoke + delete.
+- **Header link** — small key icon next to the existing settings gear that
+  opens `/settings/api-keys`.
+- **`ROADMAP.md`** — long-form product roadmap (Grok Bot, Grok Build, mobile
+  PWA, public deploy, etc.).
+
+### Tests
+- `tests/api-auth.test.ts` — 11 specs (mint, persist, findActiveKey, revoked
+  blocking, bearer parsing, isApiKey, randomString alphabet, two canonical
+  SHA-256 vectors).
+- `tests/api-key-manager.test.tsx` — 5 specs (empty state, create, persist,
+  copy, delete).
+
+Total: 83+ unit tests across 13 files.
+
 ## [1.23.0] – 2026-09-13 — Toast system + keyboard help overlay
 
 ### Added

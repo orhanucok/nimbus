@@ -1,7 +1,7 @@
 ﻿'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
-import { SendHorizontal, Image, ArrowLeft, X, Keyboard } from 'lucide-react';
+import { SendHorizontal, Image, ArrowLeft, X, Keyboard, Key } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Chat } from '@/components/Chat';
 import { useChat } from '@/hooks/useChat';
@@ -19,6 +19,7 @@ import ExportChat from '@/components/ExportChat';
 import TokenCounter from '@/components/TokenCounter';
 import useKeyboardShortcuts from '@/hooks/useKeyboardShortcuts';
 import KeyboardHelpOverlay from '@/components/KeyboardHelpOverlay';
+import Link from 'next/link';
 
 const convertImageToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -267,6 +268,14 @@ useEffect(() => {
             </div>
             {messages.length > 0 && <TokenCounter messages={messages} />}
             <ExportChat messages={messages} chatTitle={chatId} />
+            <Link
+              href="/settings/api-keys"
+              className="p-1.5 hover:bg-accent rounded-md transition-colors"
+              aria-label="API keys"
+              title="API keys"
+            >
+              <Key className="w-4 h-4 opacity-70 hover:opacity-100 transition-opacity" />
+            </Link>
             <SettingsPanel value={settings} onChange={setSettings} />
             <ProviderSwitcher
               onChange={(id) => {

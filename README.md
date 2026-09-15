@@ -255,6 +255,48 @@ MIT â€” see [LICENSE](LICENSE).
 - Original work: Copyright (c) 2024 Groc (DatoBHJ)
 - Nimbus modifications: see [NOTICE](NOTICE)
 
+## ğŸ”‘ Public REST API (v1)
+
+Nimbus exposes a tiny REST endpoint for scripting, mobile apps, and CI.
+
+### 1. Create a key
+
+Open <http://localhost:3000/settings/api-keys>, click **Create**, copy the key.
+You will only see it once.
+
+### 2. Send a chat request
+
+```bash
+curl -X POST https://your-nimbus.example/api/v1/chat \
+  -H "Authorization: Bearer nmb_XXXXXXXX_SECRET..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages": [
+      { "role": "system",    "content": "You are a helpful assistant." },
+      { "role": "user",      "content": "Say hi in Turkish." }
+    ],
+    "providerId": "deepseek",
+    "stream": true
+  }'
+```
+
+`providerId` is optional and falls back to the runtime cookie / env default.
+Streaming returns Server-Sent Events (`data: {...}\n\n`); pass `"stream": false`
+to get a JSON `{ id, content, provider, model }` response instead.
+
+Custom OpenAI-compatible endpoints work the same way as the browser UI: pick
+`providerId: "custom"` and send `X-Nimbus-Custom-Provider: <base64 JSON>` with
+`{ baseURL, model, apiKey? }`.
+
+### Endpoints (so far)
+
+| Method | Path                | Auth          | Description                              |
+|--------|---------------------|---------------|------------------------------------------|
+| `POST` | `/api/v1/chat`      | Bearer `nmb_…` | Streaming chat completion (SSE or JSON) |
+| `GET`  | `/api/v1/chat`      | —              | Endpoint metadata                       |
+
+See [ROADMAP.md](ROADMAP.md) for upcoming endpoints (sessions, bots, workflows).
+
 ## ğŸ—ºï¸ Roadmap
 
 - [x] Custom OpenAI-compatible provider (header dropdown)
