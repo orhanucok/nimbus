@@ -4,6 +4,7 @@ import { IconGitHub } from '@/components/ui/icons'
 import NimbusLogo from '@/components/NimbusLogo'
 import { Analytics } from "@vercel/analytics/react"
 import { ToastProvider } from '@/components/Toast'
+import { SWRegister } from '@/components/SWRegister'
 
 export const metadata = {
   title: 'Nimbus — Open-source Grok alternative',
@@ -103,6 +104,7 @@ export default function RootLayout({
               {children}
               <Footer />
             </div>
+            <SWRegister />
           </ToastProvider>
         </ThemeProvider>
         <Analytics />

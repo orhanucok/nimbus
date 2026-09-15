@@ -4,6 +4,34 @@ All notable changes to **Nimbus** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.25.0] – 2026-09-15 — Mobile PWA polish
+
+### Added
+- **`public/manifest.json` rewrite** — proper Nimbus branding (`Nimbus — Open-source
+  Grok alternative`), maskable icon entry, 2 shortcuts (`New chat`, `API keys`),
+  portrait orientation, dark `theme_color: #5b6cff`.
+- **`public/sw.js`** — offline-first service worker (Nimbus v1 cache namespace).
+  - Navigation → NetworkFirst with shell fallback.
+  - `/_next/static/*` and image/font assets → CacheFirst.
+  - `/api/*` → NetworkOnly (never cache streaming chat).
+  - Everything else → StaleWhileRevalidate.
+  - Versioned cache eviction on `activate`.
+- **`hooks/useServiceWorker.ts`** + **`components/SWRegister.tsx`** — client-side
+  registration helper. Production-only, idempotent, defers to `window.load` so
+  first-paint is not blocked. Mounted once in `app/layout.tsx`.
+- **Mobile CSS in `globals.css`**:
+  - `env(safe-area-inset-*)` padding on `<html>` (iOS notch + Android nav).
+  - 44 px minimum touch targets on `(pointer: coarse)` devices.
+  - 16 px font-size floor on form fields (kills iOS auto-zoom).
+  - `overscroll-behavior-y: contain` so pull-to-refresh doesn't yank the page.
+  - `@media (display-mode: standalone)` rule for installed PWAs.
+
+### Tests
+- `tests/use-service-worker.test.tsx` — 2 specs (registers with scope `/`,
+  silently no-ops when `navigator.serviceWorker` is missing).
+
+Total: 85+ unit tests across 14 files.
+
 ## [1.24.0] – 2026-09-15 — Public REST API v1 + API key manager
 
 ### Added
