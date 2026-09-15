@@ -4,6 +4,28 @@ All notable changes to **Nimbus** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.29.0] – 2026-09-15 — Remote pairing (mobile control)
+
+### Added
+- **`lib/remotePairing.ts`** — pairing protocol. 6-digit numeric codes +
+  24-char secrets, 5-minute TTL, claim-once semantics. Helpers:
+  `mintPairing`, `claimPairing`, `revokePairing`, `findPairing`,
+  `isValidPairing`, `formatCountdown`, `randomCode`, `randomSecret`.
+- **`/remote`** — desktop-side pairing console. Generate codes, live
+  countdown (`5:00 → 0:00`), copy / revoke actions, "Recent claims" list
+  with device names. AnimatePresence for graceful removal on expiry.
+- **`/remote/control`** — phone-side companion. 6-digit input pad with
+  numeric keyboard, device-name picker, success state with the curl
+  example for the REST API.
+- **Header remote icon** — links to `/remote` next to Build.
+
+### Tests
+- `tests/remote-pairing.test.ts` — 10 specs (randomCode/secret helpers,
+  formatCountdown edges, mint TTL, isValidPairing accept/reject,
+  claim-once, findPairing, revoke, load/save round-trip).
+
+Total: 123+ unit tests across 20 files.
+
 ## [1.28.0] – 2026-09-15 — Marketing pages
 
 ### Added
