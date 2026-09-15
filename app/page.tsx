@@ -1,7 +1,7 @@
 ﻿'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
-import { SendHorizontal, Image, ArrowLeft, X, Keyboard, Key, Bot } from 'lucide-react';
+import { SendHorizontal, Image, ArrowLeft, X, Keyboard, Key, Bot, Workflow } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Chat } from '@/components/Chat';
 import { useChat } from '@/hooks/useChat';
@@ -275,6 +275,14 @@ useEffect(() => {
               title="Bots"
             >
               <Bot className="w-4 h-4 opacity-70 hover:opacity-100 transition-opacity" />
+            </Link>
+            <Link
+              href="/build"
+              className="p-1.5 hover:bg-accent rounded-md transition-colors"
+              aria-label="Build"
+              title="Build"
+            >
+              <Workflow className="w-4 h-4 opacity-70 hover:opacity-100 transition-opacity" />
             </Link>
             <Link
               href="/settings/api-keys"

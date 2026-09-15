@@ -4,6 +4,33 @@ All notable changes to **Nimbus** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.27.0] – 2026-09-15 — Grok Build (workflow playground)
+
+### Added
+- **`lib/workflow.ts`** — DAG-based workflow engine:
+  - Node kinds: `prompt`, `tool`, `branch`, `http`, `code`.
+  - 8 built-in tools: `calculator`, `datetime`, `uuid`, `json`, `upper`,
+    `lower`, `reverse`, `wordcount`.
+  - Topological executor with cycle protection (50-step cap), per-node
+    `ExecLogEntry`, sandboxed `with(state)` expressions for `code`/`branch`.
+  - `validateWorkflow` rejects empty names, missing start nodes, and
+    unreachable nodes.
+- **`lib/workflowTemplates.ts`** — 5 starter workflows (Sentiment + summary,
+  If-else branching, JSON formatter, UUID + datetime stamp, Calculator chain).
+- **`/build`** — workflow library. Quick-create form, separate sections for
+  user vs built-in templates, click-to-open editor.
+- **`/build/[id]`** — workflow editor + runner. JSON-config node editor,
+  per-node kind picker, start-node selector, Run/Save/Delete buttons, live
+  run log with per-step timings, final-state dump, toast feedback.
+- **Header workflow icon** — links to `/build` next to the Bots icon.
+
+### Tests
+- `tests/workflow.test.ts` — 11 specs (calculator + sandbox, wordcount,
+  upper/reverse chain, code expression, branching on `state`, unknown tool
+  graceful fail, cycle detection, validateWorkflow errors + happy path).
+
+Total: 109+ unit tests across 18 files.
+
 ## [1.26.0] – 2026-09-15 — Grok Bot mode
 
 ### Added
