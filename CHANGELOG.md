@@ -4,6 +4,43 @@ All notable changes to **Nimbus** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.26.0] – 2026-09-15 — Grok Bot mode
+
+### Added
+- **`lib/bots.ts`** — `Bot` shape (id, name, avatar, tagline, systemPrompt,
+  temperature, maxTokens, providerId, tags, shareSlug, builtin). localStorage
+  store, slugifier, id minting. 8 built-in seed bots (Jarvis, Captain Hook,
+  The Stoic, Code Reviewer, Tutor, Sous Chef, Therapist, ELI5). Idempotent
+  `installSeedBots()` runs once on first load.
+- **`components/BotsProvider.tsx`** + `useBots()` — React context over the
+  bot store with `upsert`, `remove`, `markUsed`, `findById`, `findBySlug`.
+  Built-in bots are protected from deletion.
+- **`components/BotAvatar.tsx`** — deterministic gradient avatar (no network),
+  emoji or initials rendering, circle or rounded shape.
+- **`components/BotCard.tsx`** — hover-lift card with avatar + name + tagline
+  + tags. Built-in badge for seeded bots.
+- **`/bots`** — bot library. Search by name/tagline/tag, separate sections
+  for Built-in and Your bots.
+- **`/bots/new`** — 4-step wizard (Identity → Personality → Behavior → Review)
+  with step indicator, avatar picker, temperature slider, tag chips, public
+  share toggle, and live review before submit.
+- **`/bots/[id]`** — detail view: avatar header, system prompt, stats grid,
+  edit mode, share-link copy, delete (non-builtin), "Chat" handoff that loads
+  the bot into the main page via sessionStorage.
+- **`/b?s=<slug>`** — public share page (read-only preview + "Start chatting"
+  deep link). Falls back to a friendly "not found" with a Nimbus install CTA.
+- **Header bot icon** — links to `/bots` next to the API-keys icon.
+
+### Tests
+- `tests/bots.test.ts` — 7 specs (save/reload, findBySlug, idempotent seeds,
+  force-reset, slugify, newBotId).
+- `tests/bot-avatar.test.tsx` — 3 specs (emoji, fallback initials, fallback
+  to first letters of name).
+- `tests/bot-card.test.tsx` — 3 specs (name/tagline, built-in badge, tag cap
+  at 3).
+
+Total: 98+ unit tests across 17 files.
+
 ## [1.25.0] – 2026-09-15 — Mobile PWA polish
 
 ### Added

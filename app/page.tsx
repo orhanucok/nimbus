@@ -1,7 +1,7 @@
 ﻿'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
-import { SendHorizontal, Image, ArrowLeft, X, Keyboard, Key } from 'lucide-react';
+import { SendHorizontal, Image, ArrowLeft, X, Keyboard, Key, Bot } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Chat } from '@/components/Chat';
 import { useChat } from '@/hooks/useChat';
@@ -268,6 +268,14 @@ useEffect(() => {
             </div>
             {messages.length > 0 && <TokenCounter messages={messages} />}
             <ExportChat messages={messages} chatTitle={chatId} />
+            <Link
+              href="/bots"
+              className="p-1.5 hover:bg-accent rounded-md transition-colors"
+              aria-label="Bots"
+              title="Bots"
+            >
+              <Bot className="w-4 h-4 opacity-70 hover:opacity-100 transition-opacity" />
+            </Link>
             <Link
               href="/settings/api-keys"
               className="p-1.5 hover:bg-accent rounded-md transition-colors"
