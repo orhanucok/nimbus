@@ -4,6 +4,27 @@ All notable changes to **Nimbus** are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.0] – 2026-09-15 — Marketing pages
+
+### Added
+- **`/pricing`** — two-tier comparison (BYOK free vs Pro managed hosting,
+  with a "Coming soon" waitlist badge on Pro). Footer-deep-link from the
+  chat page.
+- **`/features`** — 11-card grid tour of every shipped capability, each
+  linking into the relevant page when it exists.
+- **`/changelog`** — public release timeline rendered server-side from
+  `CHANGELOG.md` with inline code highlighting and semantic section
+  parsing (Added / Changed / Fixed / Removed / Deprecated / Security).
+- **Footer nav** — adds `features`, `pricing`, `changelog` links on
+  ≥sm screens; version badge bumped to `v1.27.0` (will move forward with
+  each release).
+
+### Tests
+- `tests/changelog-parse.test.ts` — 4 specs (empty input, single release,
+  multi-release with mixed section kinds, fallback for unknown headings).
+
+Total: 113+ unit tests across 19 files.
+
 ## [1.27.0] – 2026-09-15 — Grok Build (workflow playground)
 
 ### Added

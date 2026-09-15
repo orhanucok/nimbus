@@ -55,16 +55,34 @@ const Footer = () => (
         <NimbusLogo className="w-4 h-4" />
         <span>Nimbus · MIT</span>
         <a
-          href="https://github.com/orhanucok/nimbus/releases/tag/v1.22.0"
+          href="https://github.com/orhanucok/nimbus/releases/tag/v1.27.0"
           target="_blank"
           rel="noopener noreferrer"
           className="px-1.5 py-0.5 rounded-md border border-border/40 hover:bg-accent transition-colors font-mono text-[10px]"
           title="View release notes"
         >
-          v1.22.0
+          v1.27.0
         </a>
       </div>
       <div className="flex items-center gap-2">
+        <a
+          href="/features"
+          className="px-1.5 py-1 hover:bg-accent rounded-md transition-colors hidden sm:inline"
+        >
+          features
+        </a>
+        <a
+          href="/pricing"
+          className="px-1.5 py-1 hover:bg-accent rounded-md transition-colors hidden sm:inline"
+        >
+          pricing
+        </a>
+        <a
+          href="/changelog"
+          className="px-1.5 py-1 hover:bg-accent rounded-md transition-colors hidden sm:inline"
+        >
+          changelog
+        </a>
         <a
           href="https://github.com/orhanucok/nimbus"
           target="_blank"

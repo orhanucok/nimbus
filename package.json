@@ -1,6 +1,6 @@
 ﻿{
   "name": "Nimbus",
-  "version": "1.27.0",
+  "version": "1.28.0",
   "description": "Open-source, multi-provider Grok-style AI chatbot. Bring your own API key (DeepSeek, OpenAI, Groq, xAI, OpenRouter, or local Ollama).",
   "private": true,
   "license": "MIT",
